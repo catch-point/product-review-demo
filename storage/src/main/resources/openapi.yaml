@@ -1,0 +1,1617 @@
+openapi: 3.1.0
+info:
+  title: Product Review Storage
+  version: 0.1.0
+  summary: JSON-LD REST storage for the product review graph.
+  description: |
+    Stores the graph described by its JSON-LD context (`context.jsonld`) in
+    the PostgreSQL tables of `schema.sql`.
+
+    **JSON-LD.** Every document is compact JSON-LD using the context served
+    at `/context.jsonld` (`context.jsonld`). Responses carry
+    `"@context"`; requests may omit it or must use the same context IRI.
+    `id` and `type` alias `@id` and `@type`. Nodes are identified by their URL
+    on this server (`https://host/products/1`); references between nodes
+    (`owner`, `itemReviewed`, `sameAs`, `owns`) are those IRIs. A review's or
+    comment's `author` is the Person node with its `id` and `name`, so clients
+    can show who wrote it without reading each person.
+    Categories are context terms (`Audio`) or category IRIs.
+
+    Each schema notes the JSON-LD type (`x-jsonld-type`) and SQL table
+    (`x-sql-table`) it maps to. Server-assigned properties are `readOnly` and
+    ignored on input.
+
+    **Collections** follow the [Hydra Core Vocabulary](https://www.w3.org/ns/hydra/core):
+    `GET /people`, `/products` and `/products/{productId}/reviews`
+    return a `Collection` whose `id` is the
+    request URL without `limit`/`offset` (filters name the collection),
+    with its `totalItems`, the page's `member`s and a `PartialCollectionView`
+    whose `first`, `previous`, `next` and `last` links page through it.
+    `previous` and `next` are omitted where there is no such page.
+    `/products` also describes its filters as a `search` IRI template, and
+    its `seeAlso` links to `/categories`, the values its `category` filter accepts.
+    A Product's `seeAlso` (rdfs:seeAlso) links to its reviews collection.
+    A Review embeds its `comment`: the product owner's reply, if any.
+
+    **Images** are uploaded with `POST /images` and referenced by URL from a
+    Product's or Review's `image`. Uploads are checked by content, never by
+    file name or declared type: the bytes must be a JPEG, PNG, GIF or WebP
+    image that decodes, within the size limit (`reviews.images.max-size`,
+    default 5 MB) and pixel limit (`reviews.images.max-pixels`, default 40
+    million). Images are stored by the SHA-256 of their content, so they never
+    change and identical uploads share one URL.
+
+    **Authentication.** Reads are public. Writes need an OAuth 2.0 bearer
+    token (JWT) whose `email` claim identifies the caller, who must first
+    register with `POST /people`. Its `role` claim says whether they
+    registered as a `reviewer` or an `owner`, and administrators have
+    `admin` in its `roles` claim.
+
+    **Authorization.** Only authenticated, registered people may write. Only
+    owners (by role) may add products, and only a product's owner may
+    change or delete it. Only reviewers (by role) may review, and never a
+    product they own. Only a review's or comment's author
+    may change or delete it; only the product's owner may reply to (comment
+    on) its reviews. A person may be registered, changed or deleted only by
+    themselves. Administrators have no other permissions (yet).
+
+    **Audit.** Every change is recorded in the `journal` table of
+    `schema.sql`, attributed to the caller who made it. The journal
+    is internal and is not exposed by this API.
+
+    **Caching.** `GET` of a single person, product, review or comment
+    returns a weak `ETag` and `Last-Modified`, with `Cache-Control: no-cache`
+    so clients revalidate: `If-None-Match` or `If-Modified-Since` then returns
+    304 while nothing changed. The ETag is the hex encoding of the latest
+    dateModified/dateCreated (in microseconds) of everything the response
+    shows: a product's aggregate rating, a review's comments, a person's
+    owned products, the names of a review's or comment's authors. Where a
+    deletion changes the response without a newer date, a hex count follows,
+    as in `W/"6411f2c7a3b5e-2"`. A person is the same for every caller, so
+    shared caches may keep it too. Only `/people/me`, which answers with the
+    caller (and their email), is cached privately (`Vary: Authorization`).
+    Collections are the same for every caller too, `Cache-Control: no-cache`
+    but without validators, so a cache asks again each time. Anything else,
+    errors included, is `no-store`.
+
+    **Concurrency.** Writes are optimistic: `PUT` and `DELETE` send the ETag
+    of the version they change as `If-Match`. If the resource has changed
+    since, the write fails with 412 Precondition Failed and changes nothing;
+    read it again and reapply the change. Without `If-Match` (or
+    `If-Unmodified-Since`, which has only whole seconds) the write fails with
+    428 Precondition Required (`reviews.concurrency.require-preconditions`).
+    `If-Match: *` accepts any version, overwriting whatever is there.
+    If-Match compares weakly: these weak ETags identify versions rather than
+    bytes, so `W/"x"` and `"x"` match. The check and the change happen in
+    one transaction with the row locked, so two writes cannot both pass with
+    the same ETag. 404 and 403 take precedence over 412 and 428. Responses to
+    `POST` (201) and `PUT` (200) carry the new `ETag` and `Last-Modified`,
+    with `Content-Location` naming the resource the body represents, so a
+    client can make its next change without reading again.
+
+    **Limits.** A JSON request body may be at most 64 KB
+    (`reviews.requests.max-body-size`), and an upload `reviews.images.max-size`
+    with its multipart encoding: larger ones fail with 413 Content Too Large
+    before they are read, or as soon as a body without a `Content-Length`
+    passes the limit. Every property has a bounded length: IRIs and URLs at
+    most 2000 characters, as the schemas give. Within the body, a JSON string
+    longer than 20000 characters, or a document nested more than 32 deep, fails
+    with 400. Request headers may total 8 KB. `offset` is at most 10000; the
+    page links never go further.
+
+    **Rate limits.** Each client may make 600 reads (`GET`, `HEAD`), 60
+    writes and 10 image uploads a minute (`reviews.rate-limits`). A
+    signed-in person is counted by their email, anyone else by their
+    address. Past a limit, requests fail with 429 Too Many Requests and a
+    `Retry-After` of the seconds until the next is allowed. The address is
+    the connection's, or the client's in `X-Forwarded-For` from a trusted
+    proxy (`reviews.requests.trusted-proxies`) such as the presentation
+    server. When the database cannot answer in time, or too many images
+    are being decoded, requests fail with 503 Service Unavailable and a
+    `Retry-After`.
+
+    **Errors** are RFC 9457 problem details (`application/problem+json`).
+  license:
+    name: Proprietary
+servers:
+  - url: http://localhost:8080
+    description: Local Docker Compose stack
+
+tags:
+  - name: Context
+    description: The JSON-LD context and controlled vocabularies.
+  - name: People
+    description: '"Person" (schema:Person), table `person`.'
+  - name: Products
+    description: '"Product" (schema:Product), tables `product`, `product_category` and `aggregate_rating`.'
+  - name: Reviews
+    description: '"Review" (schema:Review) with its "Rating", table `review`.'
+  - name: Comments
+    description: '"Comment" (schema:Comment), table `comment`.'
+  - name: Images
+    description: '"ImageObject" (schema:ImageObject), stored on disk by content hash.'
+
+security:
+  - {}
+
+paths:
+  /context.jsonld:
+    get:
+      tags: [Context]
+      operationId: getContext
+      summary: The JSON-LD context (context.jsonld)
+      responses:
+        '200':
+          description: The context document. Cached for an hour.
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                required: ['@context']
+                properties:
+                  '@context':
+                    type: object
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /openapi.yml:
+    get:
+      tags: [Context]
+      operationId: getOpenApi
+      summary: This document (openapi.yaml)
+      responses:
+        '200':
+          description: The OpenAPI document. Cached for an hour.
+          content:
+            application/yaml:
+              schema:
+                type: string
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /categories:
+    get:
+      tags: [Context]
+      operationId: listCategories
+      summary: The known categories (table `category`)
+      responses:
+        '200':
+          description: The category terms.
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/CategoryList' }
+            application/json:
+              schema: { $ref: '#/components/schemas/CategoryList' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /people:
+    get:
+      tags: [People]
+      operationId: listPeople
+      summary: Registered people, oldest first
+      description: Emails are never listed; read a person to see theirs (when permitted).
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: A page of the people collection.
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/PersonCollection' }
+            application/json:
+              schema: { $ref: '#/components/schemas/PersonCollection' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    post:
+      tags: [People]
+      operationId: registerPerson
+      summary: Register the caller
+      description: |
+        Creates the caller's Person, using the email from their token. The
+        response is the Person as `GET /people/{personId}` shows it, without
+        the email; `GET /people/me` shows it to them.
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Person'
+      responses:
+        '201':
+          $ref: '#/components/responses/PersonCreated'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /people/me:
+    get:
+      tags: [People]
+      operationId: getCurrentPerson
+      summary: The caller's Person
+      description: The only response with the person's `email`, so it is cached privately.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/IfModifiedSince'
+      responses:
+        '200': { $ref: '#/components/responses/CachedCurrentPerson' }
+        '304': { $ref: '#/components/responses/NotModified' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /people/{personId}:
+    parameters:
+      - $ref: '#/components/parameters/PersonId'
+    get:
+      tags: [People]
+      operationId: getPerson
+      summary: A Person
+      description: The same for every caller, without `email`, so shared caches may keep it.
+      security:
+        - {}
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/IfModifiedSince'
+      responses:
+        '200': { $ref: '#/components/responses/CachedPerson' }
+        '304': { $ref: '#/components/responses/NotModified' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    put:
+      tags: [People]
+      operationId: updatePerson
+      summary: Rename a Person
+      description: Only `name` can change. Only the person themselves may rename them.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      requestBody:
+        $ref: '#/components/requestBodies/Person'
+      responses:
+        '200': { $ref: '#/components/responses/Person' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    delete:
+      tags: [People]
+      operationId: deletePerson
+      summary: Delete a Person
+      description: |
+        Only the person themselves may delete them. Their products lose their
+        owner. A person who still has reviews or comments cannot be deleted.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      responses:
+        '204': { description: Deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /products:
+    get:
+      tags: [Products]
+      operationId: listProducts
+      summary: Active products, best rated first
+      parameters:
+        - name: category
+          in: query
+          description: A category term (`Audio`) or IRI.
+          schema: { $ref: '#/components/schemas/Category' }
+        - name: minRating
+          in: query
+          description: Minimum aggregate rating (1-5). Products without reviews have none, so they never match.
+          schema: { type: number, minimum: 1, maximum: 5 }
+        - name: maxRating
+          in: query
+          description: Maximum aggregate rating (1-5). Products without reviews have none, so they never match.
+          schema: { type: number, minimum: 1, maximum: 5 }
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: A page of the matching products.
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/ProductCollection' }
+              example:
+                '@context': http://localhost:8080/context.jsonld
+                id: http://localhost:8080/products?category=Audio
+                type: Collection
+                totalItems: 45
+                member:
+                  - id: http://localhost:8080/products/21
+                    type: Product
+                    name: Aria Wireless Headphones
+                    category: [Audio]
+                view:
+                  id: http://localhost:8080/products?category=Audio&limit=20&offset=20
+                  type: PartialCollectionView
+                  first: http://localhost:8080/products?category=Audio&limit=20&offset=0
+                  previous: http://localhost:8080/products?category=Audio&limit=20&offset=0
+                  next: http://localhost:8080/products?category=Audio&limit=20&offset=40
+                  last: http://localhost:8080/products?category=Audio&limit=20&offset=40
+                search:
+                  type: IriTemplate
+                  template: http://localhost:8080/products{?category,minRating,maxRating,limit,offset}
+                  variableRepresentation: BasicRepresentation
+                  mapping:
+                    - { type: IriTemplateMapping, variable: category, property: 'schema:category', required: false }
+                    - { type: IriTemplateMapping, variable: minRating, property: 'schema:ratingValue', required: false }
+                    - { type: IriTemplateMapping, variable: maxRating, property: 'schema:ratingValue', required: false }
+                    - { type: IriTemplateMapping, variable: limit, property: 'hydra:limit', required: false }
+                    - { type: IriTemplateMapping, variable: offset, property: 'hydra:offset', required: false }
+                seeAlso: http://localhost:8080/categories
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductCollection' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    post:
+      tags: [Products]
+      operationId: createProduct
+      summary: Add a product
+      description: Only owners (role `owner`) may add products; they become the owner.
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '201':
+          description: Created.
+          headers:
+            Location: { $ref: '#/components/headers/Location' }
+            Content-Location: { $ref: '#/components/headers/ContentLocation' }
+            ETag: { $ref: '#/components/headers/ETag' }
+            Last-Modified: { $ref: '#/components/headers/LastModified' }
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/Product' }
+            application/json:
+              schema: { $ref: '#/components/schemas/Product' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /products/{productId}:
+    parameters:
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      tags: [Products]
+      operationId: getProduct
+      summary: A product
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/IfModifiedSince'
+      responses:
+        '200': { $ref: '#/components/responses/CachedProduct' }
+        '304': { $ref: '#/components/responses/NotModified' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    put:
+      tags: [Products]
+      operationId: updateProduct
+      summary: Replace a product's details
+      description: Only owners (role `owner`), of this product. The owner cannot be changed.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '200': { $ref: '#/components/responses/Product' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    delete:
+      tags: [Products]
+      operationId: deleteProduct
+      summary: Discontinue a product
+      description: |
+        Only the product's owner. The first DELETE hides it from listings,
+        direct reads, review collections and ownership, while its reviews and
+        replies stay readable through their own IRIs. The owner may repeat the
+        DELETE: it succeeds with 204 without checking preconditions or changing
+        anything. Anyone else, and an unknown product, gets 404.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      responses:
+        '204': { description: Deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /products/{productId}/reviews:
+    parameters:
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      tags: [Reviews]
+      operationId: listReviews
+      summary: A product's reviews, newest first, each with its owner's reply, if any
+      parameters:
+        - name: author
+          in: query
+          description: |
+            Only the review this person (a Person IRI) wrote of the product:
+            a collection of one, or none. Each person reviews a product at most once.
+          schema: { type: string, format: uri-reference }
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: A page of the product's reviews.
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/ReviewCollection' }
+            application/json:
+              schema: { $ref: '#/components/schemas/ReviewCollection' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    post:
+      tags: [Reviews]
+      operationId: createReview
+      summary: Review a product
+      description: |
+        Only reviewers (role `reviewer`), and never the product's owner.
+        Each reviewer reviews an active product once: a second review is
+        refused with 409, whose `review` is the existing review's IRI, to
+        update with `PUT /reviews/{reviewId}` instead. A discontinued product
+        is not found (404) and takes no new reviews. Updates the product's
+        AggregateRating.
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Review'
+      responses:
+        '201':
+          description: Created.
+          headers:
+            Location: { $ref: '#/components/headers/Location' }
+            Content-Location: { $ref: '#/components/headers/ContentLocation' }
+            ETag: { $ref: '#/components/headers/ETag' }
+            Last-Modified: { $ref: '#/components/headers/LastModified' }
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/Review' }
+            application/json:
+              schema: { $ref: '#/components/schemas/Review' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: The caller has already reviewed this product.
+          content:
+            application/problem+json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - type: object
+                    properties:
+                      review: { type: string, format: uri, description: The caller's existing review. }
+              example:
+                type: about:blank
+                title: Conflict
+                status: 409
+                detail: You have already reviewed product 1; update your review instead
+                review: http://localhost:8080/reviews/7
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /reviews/{reviewId}:
+    parameters:
+      - $ref: '#/components/parameters/ReviewId'
+    get:
+      tags: [Reviews]
+      operationId: getReview
+      summary: A review, with its owner's reply, if any
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/IfModifiedSince'
+      responses:
+        '200': { $ref: '#/components/responses/CachedReview' }
+        '304': { $ref: '#/components/responses/NotModified' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    put:
+      tags: [Reviews]
+      operationId: updateReview
+      summary: Replace a review's body and rating
+      description: Only the review's author. Updates the AggregateRating.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      requestBody:
+        $ref: '#/components/requestBodies/Review'
+      responses:
+        '200': { $ref: '#/components/responses/Review' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    delete:
+      tags: [Reviews]
+      operationId: deleteReview
+      summary: Delete a review with its comments
+      description: Only the review's author. Its comments are deleted with it. Updates the AggregateRating.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      responses:
+        '204': { description: Deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /reviews/{reviewId}/comments:
+    parameters:
+      - $ref: '#/components/parameters/ReviewId'
+    post:
+      tags: [Comments]
+      operationId: createComment
+      summary: Reply to a review
+      description: |
+        Only the reviewed product's owner, once, even after it is discontinued.
+        A second reply is refused with 409, whose `comment` is the existing
+        reply's IRI, to change with `PUT /comments/{commentId}` instead; once
+        that is deleted, the owner may reply again. The reply is embedded in
+        the review as its `comment`.
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Comment'
+      responses:
+        '201':
+          description: Created.
+          headers:
+            Location: { $ref: '#/components/headers/Location' }
+            Content-Location: { $ref: '#/components/headers/ContentLocation' }
+            ETag: { $ref: '#/components/headers/ETag' }
+            Last-Modified: { $ref: '#/components/headers/LastModified' }
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/Comment' }
+            application/json:
+              schema: { $ref: '#/components/schemas/Comment' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409':
+          description: The caller has already replied to this review.
+          content:
+            application/problem+json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Problem'
+                  - type: object
+                    properties:
+                      comment: { type: string, format: uri, description: The caller's existing reply. }
+              example:
+                type: about:blank
+                title: Conflict
+                status: 409
+                detail: You have already replied to review 7; change your reply instead
+                comment: http://localhost:8080/comments/3
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /comments/{commentId}:
+    parameters:
+      - $ref: '#/components/parameters/CommentId'
+    get:
+      tags: [Comments]
+      operationId: getComment
+      summary: A comment
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/IfModifiedSince'
+      responses:
+        '200': { $ref: '#/components/responses/CachedComment' }
+        '304': { $ref: '#/components/responses/NotModified' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    put:
+      tags: [Comments]
+      operationId: updateComment
+      summary: Replace a comment's text
+      description: Only the comment's author.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      requestBody:
+        $ref: '#/components/requestBodies/Comment'
+      responses:
+        '200': { $ref: '#/components/responses/Comment' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '413': { $ref: '#/components/responses/BodyTooLarge' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+    delete:
+      tags: [Comments]
+      operationId: deleteComment
+      summary: Delete a comment
+      description: Only the comment's author.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/IfUnmodifiedSince'
+      responses:
+        '204': { description: Deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '428': { $ref: '#/components/responses/PreconditionRequired' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /images:
+    post:
+      tags: [Images]
+      operationId: uploadImage
+      summary: Upload an image
+      description: |
+        Any registered person may upload. Its metadata is removed first: EXIF
+        (GPS location, camera, time), XMP, IPTC, comments, text and anything
+        after the image's end; colour profiles, transparency, animation and a
+        JPEG's orientation stay, and the pixels are not re-encoded. Returns
+        201 for a new image and 200 when identical content (after that) is
+        already stored (same URL).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  contentMediaType: application/octet-stream
+                  description: The image (JPEG, PNG, GIF or WebP), detected from its content.
+            encoding:
+              file:
+                contentType: image/jpeg, image/png, image/gif, image/webp
+      responses:
+        '201':
+          description: Stored.
+          headers:
+            Location: { $ref: '#/components/headers/Location' }
+            Content-Location: { $ref: '#/components/headers/ContentLocation' }
+            ETag: { $ref: '#/components/headers/ETag' }
+            Last-Modified: { $ref: '#/components/headers/LastModified' }
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/ImageObject' }
+            application/json:
+              schema: { $ref: '#/components/schemas/ImageObject' }
+        '200':
+          description: Identical content was already stored.
+          headers:
+            Location: { $ref: '#/components/headers/Location' }
+            Content-Location: { $ref: '#/components/headers/ContentLocation' }
+            ETag: { $ref: '#/components/headers/ETag' }
+            Last-Modified: { $ref: '#/components/headers/LastModified' }
+          content:
+            application/ld+json:
+              schema: { $ref: '#/components/schemas/ImageObject' }
+            application/json:
+              schema: { $ref: '#/components/schemas/ImageObject' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '413': { $ref: '#/components/responses/ContentTooLarge' }
+        '415': { $ref: '#/components/responses/UnsupportedMediaType' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /images/{imageId}:
+    parameters:
+      - $ref: '#/components/parameters/ImageId'
+    get:
+      tags: [Images]
+      operationId: getImage
+      summary: An uploaded image
+      description: |
+        The stored bytes. Images never change, so responses are cacheable for a
+        year (`immutable`), and `If-None-Match` with the ETag (the SHA-256)
+        returns 304, as does `If-None-Match: *` for an image that exists.
+      parameters:
+        - name: If-None-Match
+          in: header
+          schema: { type: string }
+      responses:
+        '200':
+          description: The image.
+          headers:
+            ETag:
+              schema: { type: string }
+            Cache-Control:
+              schema: { type: string, example: 'max-age=31536000, public, immutable' }
+          content:
+            image/jpeg:
+              schema: { type: string, contentMediaType: image/jpeg }
+            image/png:
+              schema: { type: string, contentMediaType: image/png }
+            image/gif:
+              schema: { type: string, contentMediaType: image/gif }
+            image/webp:
+              schema: { type: string, contentMediaType: image/webp }
+        '304': { description: Not modified. }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        A JWT from the identity provider (the identity project's Keycloak realm
+        `reviews`), for the audience `storage` and with a verified email; or, in
+        development, and only with `reviews.security.dev-tokens` on, signed
+        HS256 with `reviews.security.jwt-secret`. The
+        `email` claim names the caller.
+
+  parameters:
+    IfNoneMatch:
+      name: If-None-Match
+      in: header
+      description: An ETag from an earlier response; 304 if it still matches.
+      schema: { type: string }
+    IfModifiedSince:
+      name: If-Modified-Since
+      in: header
+      description: A Last-Modified from an earlier response; 304 if unchanged since.
+      schema: { type: string }
+    IfMatch:
+      name: If-Match
+      in: header
+      description: |
+        The ETag of the version this write changes, from a GET, POST or PUT
+        response (compared weakly), or `*` for any version. 412 if it has
+        changed. Required unless If-Unmodified-Since is sent instead.
+      schema: { type: string, example: 'W/"6411f2c7a3b5e"' }
+    IfUnmodifiedSince:
+      name: If-Unmodified-Since
+      in: header
+      description: |
+        A Last-Modified from an earlier response; 412 if modified since. Used
+        only without If-Match. HTTP dates have whole seconds, so prefer If-Match.
+      schema: { type: string, example: 'Mon, 19 Oct 2026 13:05:00 GMT' }
+    PersonId:
+      name: personId
+      in: path
+      required: true
+      schema: { type: integer, format: int32, minimum: 1 }
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      schema: { type: integer, format: int32, minimum: 1 }
+    ReviewId:
+      name: reviewId
+      in: path
+      required: true
+      schema: { type: integer, format: int64, minimum: 1 }
+    ImageId:
+      name: imageId
+      in: path
+      required: true
+      description: The SHA-256 of the image's content and its extension.
+      schema: { type: string, pattern: '^[0-9a-f]{64}\.(jpg|png|gif|webp)$' }
+    CommentId:
+      name: commentId
+      in: path
+      required: true
+      schema: { type: integer, format: int64, minimum: 1 }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    Offset:
+      name: offset
+      in: query
+      schema: { type: integer, minimum: 0, maximum: 10000, default: 0 }
+
+  headers:
+    ETag:
+      description: A weak validator, the hex encoding of the latest dateModified/dateCreated (and any counts).
+      schema: { type: string, example: 'W/"6411f2c7a3b5e"' }
+    LastModified:
+      description: The latest dateModified/dateCreated of the representation.
+      schema: { type: string, example: 'Mon, 19 Oct 2026 13:05:00 GMT' }
+    CacheControl:
+      schema: { type: string, const: no-cache }
+    CacheControlPrivate:
+      schema: { type: string, const: 'no-cache, private' }
+    VaryAuthorization:
+      schema: { type: string, const: Authorization }
+    Location:
+      description: The new node's IRI.
+      schema: { type: string, format: uri }
+    ContentLocation:
+      description: The node the body represents, so the validators describe the body.
+      schema: { type: string, format: uri }
+
+  requestBodies:
+    Person:
+      required: true
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Person' }
+          example: { type: Person, name: Olive }
+        application/json:
+          schema: { $ref: '#/components/schemas/Person' }
+    Product:
+      required: true
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Product' }
+          example:
+            '@context': http://localhost:8080/context.jsonld
+            type: Product
+            name: Aria Wireless Headphones
+            description: Over-ear noise-cancelling headphones.
+            url: https://products.example/aria-wireless-headphones
+            category: [Audio]
+            brand: Aria
+            gtin: '00012345600012'
+            sku: ARIA-WH-01
+            mpn: WH-1000
+        application/json:
+          schema: { $ref: '#/components/schemas/Product' }
+    Review:
+      required: true
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Review' }
+          example:
+            type: Review
+            reviewBody: Great sound and comfortable.
+            reviewRating: { type: Rating, ratingValue: 4 }
+        application/json:
+          schema: { $ref: '#/components/schemas/Review' }
+    Comment:
+      required: true
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Comment' }
+          example: { type: Comment, text: Thank you for your review! }
+        application/json:
+          schema: { $ref: '#/components/schemas/Comment' }
+
+  responses:
+    NotModified:
+      description: Not modified since the validators given; use the cached copy.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+    Person:
+      description: The person as stored. Send its ETag as If-Match to change it again.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Content-Location: { $ref: '#/components/headers/ContentLocation' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Person' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Person' }
+
+    CachedPerson:
+      description: The person, without their email. Revalidate with If-None-Match or If-Modified-Since.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Cache-Control: { $ref: '#/components/headers/CacheControl' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Person' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Person' }
+    CachedCurrentPerson:
+      description: The caller, with their email. Revalidate with If-None-Match or If-Modified-Since.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Cache-Control: { $ref: '#/components/headers/CacheControlPrivate' }
+        Vary: { $ref: '#/components/headers/VaryAuthorization' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Person' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Person' }
+    PersonCreated:
+      description: Registered.
+      headers:
+        Location: { $ref: '#/components/headers/Location' }
+        Content-Location: { $ref: '#/components/headers/ContentLocation' }
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Person' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Person' }
+    Product:
+      description: The product as stored. Send its ETag as If-Match to change it again.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Content-Location: { $ref: '#/components/headers/ContentLocation' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Product' }
+          example:
+            '@context': http://localhost:8080/context.jsonld
+            id: http://localhost:8080/products/1
+            type: Product
+            name: Aria Wireless Headphones
+            category: [Audio]
+            brand: Aria
+            gtin: '00012345600012'
+            sku: ARIA-WH-01
+            mpn: WH-1000
+            owner: http://localhost:8080/people/1
+            aggregateRating:
+              type: AggregateRating
+              ratingValue: 4.5
+              bestRating: 5.0
+              worstRating: 1.0
+              ratingCount: 2
+              reviewCount: 2
+            dateCreated: '2026-10-19T13:00:00Z'
+            seeAlso: http://localhost:8080/products/1/reviews
+        application/json:
+          schema: { $ref: '#/components/schemas/Product' }
+
+    CachedProduct:
+      description: The product. Revalidate with If-None-Match or If-Modified-Since.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Cache-Control: { $ref: '#/components/headers/CacheControl' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Product' }
+          example:
+            '@context': http://localhost:8080/context.jsonld
+            id: http://localhost:8080/products/1
+            type: Product
+            name: Aria Wireless Headphones
+            category: [Audio]
+            brand: Aria
+            gtin: '00012345600012'
+            sku: ARIA-WH-01
+            mpn: WH-1000
+            owner: http://localhost:8080/people/1
+            aggregateRating:
+              type: AggregateRating
+              ratingValue: 4.5
+              bestRating: 5.0
+              worstRating: 1.0
+              ratingCount: 2
+              reviewCount: 2
+            dateCreated: '2026-10-19T13:00:00Z'
+            seeAlso: http://localhost:8080/products/1/reviews
+        application/json:
+          schema: { $ref: '#/components/schemas/Product' }
+    Review:
+      description: The review as stored. Send its ETag as If-Match to change it again.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Content-Location: { $ref: '#/components/headers/ContentLocation' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Review' }
+          example:
+            '@context': http://localhost:8080/context.jsonld
+            id: http://localhost:8080/reviews/7
+            type: Review
+            itemReviewed: http://localhost:8080/products/1
+            author: { id: http://localhost:8080/people/2, type: Person, name: Rob }
+            reviewBody: Great sound and comfortable.
+            reviewRating: { type: Rating, ratingValue: 4.0, bestRating: 5.0, worstRating: 1.0 }
+            datePublished: '2026-10-19T13:05:00Z'
+            comment:
+              - id: http://localhost:8080/comments/3
+                type: Comment
+                text: Thank you for visiting!
+                author: { id: http://localhost:8080/people/1, type: Person, name: Olive }
+                datePublished: '2026-10-19T14:00:00Z'
+        application/json:
+          schema: { $ref: '#/components/schemas/Review' }
+
+    CachedReview:
+      description: The review. Revalidate with If-None-Match or If-Modified-Since.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Cache-Control: { $ref: '#/components/headers/CacheControl' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Review' }
+          example:
+            '@context': http://localhost:8080/context.jsonld
+            id: http://localhost:8080/reviews/7
+            type: Review
+            itemReviewed: http://localhost:8080/products/1
+            author: { id: http://localhost:8080/people/2, type: Person, name: Rob }
+            reviewBody: Great sound and comfortable.
+            reviewRating: { type: Rating, ratingValue: 4.0, bestRating: 5.0, worstRating: 1.0 }
+            datePublished: '2026-10-19T13:05:00Z'
+            comment:
+              - id: http://localhost:8080/comments/3
+                type: Comment
+                text: Thank you for visiting!
+                author: { id: http://localhost:8080/people/1, type: Person, name: Olive }
+                datePublished: '2026-10-19T14:00:00Z'
+        application/json:
+          schema: { $ref: '#/components/schemas/Review' }
+    Comment:
+      description: The comment as stored. Send its ETag as If-Match to change it again.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Content-Location: { $ref: '#/components/headers/ContentLocation' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Comment' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Comment' }
+
+    CachedComment:
+      description: The comment. Revalidate with If-None-Match or If-Modified-Since.
+      headers:
+        ETag: { $ref: '#/components/headers/ETag' }
+        Last-Modified: { $ref: '#/components/headers/LastModified' }
+        Cache-Control: { $ref: '#/components/headers/CacheControl' }
+      content:
+        application/ld+json:
+          schema: { $ref: '#/components/schemas/Comment' }
+        application/json:
+          schema: { $ref: '#/components/schemas/Comment' }
+    BadRequest:
+      description: The request or document is invalid.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Bad Request
+            status: 400
+            detail: ratingValue must be between 1 and 5
+            instance: /products/1/reviews
+    TooManyRequests:
+      description: The client has made more requests of this kind than `reviews.rate-limits` allows a minute.
+      headers:
+        Retry-After:
+          description: Seconds until the request would be allowed.
+          schema: { type: integer, minimum: 1 }
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Too Many Requests
+            status: 429
+            detail: 'Too many writes: at most 60 a minute'
+    ServiceUnavailable:
+      description: The service is too busy for the request now (the database, or image decoding).
+      headers:
+        Retry-After:
+          description: Seconds to wait before trying again.
+          schema: { type: integer, minimum: 1 }
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Service Unavailable
+            status: 503
+            detail: The service is busy; try again shortly
+    BodyTooLarge:
+      description: The request body exceeds 64 KB (`reviews.requests.max-body-size`).
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Content Too Large
+            status: 413
+            detail: Request bodies may be at most 64 KB
+    ContentTooLarge:
+      description: The upload exceeds `reviews.images.max-size` or `reviews.images.max-pixels`.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Content Too Large
+            status: 413
+            detail: Images may be at most 5120 KB
+    UnsupportedMediaType:
+      description: The upload is not a valid JPEG, PNG, GIF or WebP image.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Unsupported Media Type
+            status: 415
+            detail: The upload is not a JPEG, PNG, GIF or WebP image
+    Unauthorized:
+      description: No valid bearer token.
+      headers:
+        WWW-Authenticate:
+          schema: { type: string }
+    Forbidden:
+      description: Not registered, without the role the operation needs, or not the owner or author of what is being changed.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Forbidden
+            status: 403
+            detail: Only reviewers may do this
+    NotFound:
+      description: No such node.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Conflict:
+      description: The change conflicts with existing data.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    PreconditionFailed:
+      description: |
+        The resource has changed since the If-Match ETag (or If-Unmodified-Since)
+        was read. Nothing was changed: read it again and reapply the change.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          example:
+            type: about:blank
+            title: Precondition Failed
+            status: 412
+            detail: 'The resource has changed: its ETag is no longer any of If-Match. Read it again and reapply the change.'
+    PreconditionRequired:
+      description: The write sent neither If-Match nor If-Unmodified-Since.
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+
+  schemas:
+    Context:
+      description: The context IRI (`/context.jsonld` on this server). Optional on input.
+      oneOf:
+        - type: string
+          format: uri
+        - type: array
+          items: { type: string, format: uri }
+          minItems: 1
+          maxItems: 1
+
+    Iri:
+      type: string
+      format: uri-reference
+      maxLength: 2000
+      description: A node IRI on this server, absolute or relative (`/products/1`).
+
+    Category:
+      description: A context term, or the IRI of a category in table `category`.
+      anyOf:
+        - type: string
+          enum: [Audio, Books, Electronics, Home, Outdoors, Toys]
+        - type: string
+          format: uri
+          maxLength: 2000
+
+    DateTime:
+      type: string
+      format: date-time
+      readOnly: true
+
+    CategoryList:
+      x-jsonld-type: schema:DefinedTermSet
+      x-sql-table: category
+      type: object
+      required: ['@context', id, type, hasDefinedTerm]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id: { type: string, format: uri }
+        type: { const: CategoryList }
+        hasDefinedTerm:
+          type: array
+          uniqueItems: true
+          items: { $ref: '#/components/schemas/Category' }
+
+    Person:
+      x-jsonld-type: schema:Person
+      x-sql-table: person
+      type: object
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+        type: { const: Person }
+        name: { type: string, maxLength: 200 }
+        email:
+          type: string
+          format: email
+          maxLength: 254
+          readOnly: true
+          description: From the caller's token. Only in `GET /people/me`, to the person themselves.
+        owns:
+          type: array
+          readOnly: true
+          uniqueItems: true
+          maxItems: 1000
+          description: The products whose `owner` this person is.
+          items: { $ref: '#/components/schemas/Iri' }
+        dateCreated: { $ref: '#/components/schemas/DateTime' }
+        dateModified: { $ref: '#/components/schemas/DateTime' }
+
+    Author:
+      x-jsonld-type: schema:Person
+      x-sql-table: person
+      type: object
+      readOnly: true
+      description: |
+        The Person who wrote a review or comment, with their name (never their
+        email). Ignored on input, where it may also be the Person's IRI alone.
+      required: [id, type, name]
+      properties:
+        id: { $ref: '#/components/schemas/Iri' }
+        type: { const: Person }
+        name: { type: string, maxLength: 200 }
+
+    AggregateRating:
+      x-jsonld-type: schema:AggregateRating
+      x-sql-table: aggregate_rating
+      type: object
+      readOnly: true
+      description: |
+        Maintained from the product's reviews: the mean rating, each scaled
+        to 1-5. `reviewCount` counts the reviews with a `reviewBody`.
+      required: [type, ratingValue, bestRating, worstRating, ratingCount, reviewCount]
+      properties:
+        type: { const: AggregateRating }
+        ratingValue: { type: number, minimum: 1, maximum: 5 }
+        bestRating: { type: number }
+        worstRating: { type: number }
+        ratingCount: { type: integer, minimum: 0 }
+        reviewCount: { type: integer, minimum: 0 }
+
+    Product:
+      x-jsonld-type: schema:Product
+      x-sql-table: product
+      type: object
+      required: [name]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+        type: { const: Product }
+        name: { type: string, minLength: 1, maxLength: 200 }
+        description: { type: string, maxLength: 5000 }
+        image:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: An image uploaded with `POST /images`, by the `id` it returned (or that IRI relative to this server). It is stored as its path from the server's root (`/images/{sha256}.{ext}`) and returned as an IRI relative to the request, so it names the image wherever the service is reached from. Other URLs are refused with 400.
+        url:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: An absolute http or https URL.
+        sameAs:
+          type: array
+          maxItems: 1
+          description: Another product on this server that this one duplicates.
+          items: { $ref: '#/components/schemas/Iri' }
+        category:
+          type: array
+          uniqueItems: true
+          maxItems: 20
+          items: { $ref: '#/components/schemas/Category' }
+        brand: { type: string, maxLength: 200 }
+        gtin:
+          type: string
+          pattern: '^\d{8}$|^\d{12,14}$'
+          maxLength: 14
+          description: A GTIN-8, GTIN-12, GTIN-13 or GTIN-14.
+        sku: { type: string, maxLength: 100 }
+        mpn: { type: string, maxLength: 100 }
+        owner:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+          description: The Person who added the product.
+        aggregateRating: { $ref: '#/components/schemas/AggregateRating' }
+        dateCreated: { $ref: '#/components/schemas/DateTime' }
+        dateModified: { $ref: '#/components/schemas/DateTime' }
+        seeAlso:
+          type: string
+          format: uri
+          maxLength: 2000
+          readOnly: true
+          x-jsonld-property: rdfs:seeAlso
+          description: The product's reviews (`/products/{productId}/reviews`).
+
+    Rating:
+      x-jsonld-type: schema:Rating
+      x-sql-table: review (inline columns)
+      type: object
+      required: [ratingValue]
+      description: '`worstRating` < `bestRating`, and `ratingValue` lies between them.'
+      properties:
+        type: { const: Rating }
+        ratingValue: { type: number, minimum: -99.9, maximum: 99.9 }
+        bestRating: { type: number, default: 5, minimum: -99.9, maximum: 99.9 }
+        worstRating: { type: number, default: 1, minimum: -99.9, maximum: 99.9 }
+
+    Review:
+      x-jsonld-type: schema:Review
+      x-sql-table: review
+      type: object
+      required: [reviewRating]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+        type: { const: Review }
+        itemReviewed:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+          description: The Product (from the URL on input).
+        author: { $ref: '#/components/schemas/Author' }
+        reviewBody: { type: string, maxLength: 10000 }
+        image:
+          type: string
+          format: uri
+          maxLength: 2000
+          description: An image uploaded with `POST /images`, by the `id` it returned (or that IRI relative to this server). It is stored as its path from the server's root (`/images/{sha256}.{ext}`) and returned as an IRI relative to the request, so it names the image wherever the service is reached from. Other URLs are refused with 400.
+        reviewRating: { $ref: '#/components/schemas/Rating' }
+        datePublished: { $ref: '#/components/schemas/DateTime' }
+        dateModified: { $ref: '#/components/schemas/DateTime' }
+        comment:
+          type: array
+          readOnly: true
+          maxItems: 1
+          description: |
+            The product owner's reply, if any. They reply with
+            `POST /reviews/{reviewId}/comments`, once, and change or delete
+            it at its own `id` (`/comments/{commentId}`).
+          items: { $ref: '#/components/schemas/Comment' }
+
+    Comment:
+      x-jsonld-type: schema:Comment
+      x-sql-table: comment
+      type: object
+      required: [text]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id:
+          allOf: [{ $ref: '#/components/schemas/Iri' }]
+          readOnly: true
+        type: { const: Comment }
+        text: { type: string, minLength: 1, maxLength: 5000 }
+        author: { $ref: '#/components/schemas/Author' }
+        datePublished: { $ref: '#/components/schemas/DateTime' }
+        dateModified: { $ref: '#/components/schemas/DateTime' }
+
+    ImageObject:
+      x-jsonld-type: schema:ImageObject
+      type: object
+      readOnly: true
+      required: ['@context', id, type, contentUrl, encodingFormat, width, height, sha256, uploadDate]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id:
+          type: string
+          format: uri
+          description: The image URL; use it as a Product's or Review's `image`.
+        type: { const: ImageObject }
+        contentUrl: { type: string, format: uri }
+        encodingFormat:
+          type: string
+          enum: [image/jpeg, image/png, image/gif, image/webp]
+          description: Detected from the content.
+        width: { type: integer, minimum: 1, description: Pixels. }
+        height: { type: integer, minimum: 1, description: Pixels. }
+        sha256:
+          type: string
+          pattern: '^[0-9a-f]{64}$'
+          description: Of the bytes as stored, without their metadata.
+        uploadDate:
+          type: string
+          format: date-time
+          description: When these bytes were last uploaded, by anyone.
+
+    Collection:
+      x-jsonld-type: hydra:Collection
+      type: object
+      description: |
+        A page of a hydra:Collection. `id` names the whole collection (the
+        request URL without `limit` and `offset`); `view` names this page.
+      required: ['@context', id, type, totalItems, member, view]
+      properties:
+        '@context': { $ref: '#/components/schemas/Context' }
+        id: { type: string, format: uri }
+        type: { const: Collection }
+        totalItems:
+          type: integer
+          minimum: 0
+          description: Members across all pages.
+        member:
+          type: array
+          description: This page's members.
+          items: { type: object }
+        view: { $ref: '#/components/schemas/PartialCollectionView' }
+
+    PartialCollectionView:
+      x-jsonld-type: hydra:PartialCollectionView
+      type: object
+      description: Links to the pages of the collection. `previous` and `next` are absent at the ends.
+      required: [id, type, first, last]
+      properties:
+        id: { type: string, format: uri, description: This page. }
+        type: { const: PartialCollectionView }
+        first: { type: string, format: uri }
+        previous: { type: string, format: uri }
+        next: { type: string, format: uri }
+        last: { type: string, format: uri }
+
+    IriTemplate:
+      x-jsonld-type: hydra:IriTemplate
+      type: object
+      required: [type, template, variableRepresentation, mapping]
+      properties:
+        type: { const: IriTemplate }
+        template:
+          type: string
+          description: An RFC 6570 URI template (hydra:Rfc6570Template).
+        variableRepresentation: { const: BasicRepresentation }
+        mapping:
+          type: array
+          items: { $ref: '#/components/schemas/IriTemplateMapping' }
+
+    IriTemplateMapping:
+      x-jsonld-type: hydra:IriTemplateMapping
+      type: object
+      required: [type, variable, property, required]
+      properties:
+        type: { const: IriTemplateMapping }
+        variable: { type: string }
+        property:
+          type: string
+          description: The property the variable filters on, as a compact IRI.
+        required: { type: boolean }
+
+    PersonCollection:
+      allOf:
+        - $ref: '#/components/schemas/Collection'
+        - type: object
+          properties:
+            member:
+              type: array
+              items: { $ref: '#/components/schemas/Person' }
+
+    ProductCollection:
+      allOf:
+        - $ref: '#/components/schemas/Collection'
+        - type: object
+          required: [search, seeAlso]
+          properties:
+            member:
+              type: array
+              items: { $ref: '#/components/schemas/Product' }
+            search: { $ref: '#/components/schemas/IriTemplate' }
+            seeAlso:
+              type: string
+              format: uri
+              x-jsonld-property: rdfs:seeAlso
+              description: The categories the `category` filter accepts (`/categories`).
+
+    ReviewCollection:
+      allOf:
+        - $ref: '#/components/schemas/Collection'
+        - type: object
+          required: [search]
+          properties:
+            member:
+              type: array
+              items: { $ref: '#/components/schemas/Review' }
+            search: { $ref: '#/components/schemas/IriTemplate' }
+
+    Problem:
+      type: object
+      description: RFC 9457 problem details.
+      properties:
+        type: { type: string, format: uri-reference, default: about:blank }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string, format: uri-reference }
