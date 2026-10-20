@@ -1,0 +1,140 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+
+    "id": "@id",
+    "type": "@type",
+
+    "schema": { "@id": "https://schema.org/", "@prefix": true },
+    "xsd": { "@id": "http://www.w3.org/2001/XMLSchema#", "@prefix": true },
+    "hydra": { "@id": "http://www.w3.org/ns/hydra/core#", "@prefix": true },
+    "rdfs": { "@id": "http://www.w3.org/2000/01/rdf-schema#", "@prefix": true },
+
+    "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" },
+
+    "Collection": "hydra:Collection",
+    "member": { "@id": "hydra:member", "@type": "@id", "@container": "@set" },
+    "totalItems": { "@id": "hydra:totalItems", "@type": "xsd:nonNegativeInteger" },
+    "view": { "@id": "hydra:view", "@type": "@id" },
+    "PartialCollectionView": "hydra:PartialCollectionView",
+    "first": { "@id": "hydra:first", "@type": "@id" },
+    "previous": { "@id": "hydra:previous", "@type": "@id" },
+    "next": { "@id": "hydra:next", "@type": "@id" },
+    "last": { "@id": "hydra:last", "@type": "@id" },
+    "search": { "@id": "hydra:search", "@type": "@id" },
+    "IriTemplate": "hydra:IriTemplate",
+    "template": { "@id": "hydra:template", "@type": "hydra:Rfc6570Template" },
+    "variableRepresentation": { "@id": "hydra:variableRepresentation", "@type": "@vocab" },
+    "BasicRepresentation": "hydra:BasicRepresentation",
+    "mapping": { "@id": "hydra:mapping", "@container": "@set" },
+    "IriTemplateMapping": "hydra:IriTemplateMapping",
+    "variable": "hydra:variable",
+    "property": { "@id": "hydra:property", "@type": "@vocab" },
+    "required": { "@id": "hydra:required", "@type": "xsd:boolean" },
+
+    "text": "schema:text",
+    "image": { "@id": "schema:image", "@type": "@id" },
+    "author": { "@id": "schema:author", "@type": "@id" },
+    "dateCreated": { "@id": "schema:dateCreated", "@type": "xsd:dateTime" },
+    "dateModified": { "@id": "schema:dateModified", "@type": "xsd:dateTime" },
+    "datePublished": { "@id": "schema:datePublished", "@type": "xsd:dateTime" },
+
+    "ratingValue": { "@id": "schema:ratingValue", "@type": "xsd:decimal" },
+    "bestRating": { "@id": "schema:bestRating", "@type": "xsd:decimal" },
+    "worstRating": { "@id": "schema:worstRating", "@type": "xsd:decimal" },
+
+
+    "Person": {
+      "@id": "schema:Person",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "name": "schema:name",
+        "email": "schema:email",
+        "owns": { "@id": "schema:owns", "@type": "@id", "@container": "@set" }
+      }
+    },
+
+    "CategoryList": {
+      "@id": "schema:DefinedTermSet",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "hasDefinedTerm": { "@id": "schema:hasDefinedTerm", "@type": "@vocab", "@container": "@set" }
+      }
+    },
+
+    "Audio": "https://example.com/categories/audio",
+    "Books": "https://example.com/categories/books",
+    "Electronics": "https://example.com/categories/electronics",
+    "Home": "https://example.com/categories/home",
+    "Outdoors": "https://example.com/categories/outdoors",
+    "Toys": "https://example.com/categories/toys",
+
+    "Product": {
+      "@id": "schema:Product",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "name": "schema:name",
+        "description": "schema:description",
+        "url": { "@id": "schema:url", "@type": "@id" },
+        "sameAs": { "@id": "schema:sameAs", "@type": "@id", "@container": "@set" },
+        "category": { "@id": "schema:category", "@type": "@vocab", "@container": "@set" },
+        "brand": "schema:brand",
+        "gtin": "schema:gtin",
+        "sku": "schema:sku",
+        "mpn": "schema:mpn",
+        "owner": { "@id": "schema:owner", "@type": "@id" },
+        "aggregateRating": { "@id": "schema:aggregateRating", "@type": "@id" }
+      }
+    },
+
+    "Review": {
+      "@id": "schema:Review",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "itemReviewed": { "@id": "schema:itemReviewed", "@type": "@id" },
+        "reviewBody": "schema:reviewBody",
+        "reviewRating": { "@id": "schema:reviewRating", "@type": "@id" },
+        "comment": { "@id": "schema:comment", "@type": "@id", "@container": "@set" }
+      }
+    },
+
+    "Comment": "schema:Comment",
+
+    "Rating": "schema:Rating",
+
+    "ImageObject": {
+      "@id": "schema:ImageObject",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "contentUrl": { "@id": "schema:contentUrl", "@type": "@id" },
+        "encodingFormat": "schema:encodingFormat",
+        "width": { "@id": "schema:width", "@type": "xsd:integer" },
+        "height": { "@id": "schema:height", "@type": "xsd:integer" },
+        "sha256": "schema:sha256",
+        "uploadDate": { "@id": "schema:uploadDate", "@type": "xsd:dateTime" }
+      }
+    },
+
+    "AggregateRating": {
+      "@id": "schema:AggregateRating",
+      "@context": {
+        "@version": 1.1,
+        "@protected": true,
+        "ratingCount": {
+          "@id": "schema:ratingCount",
+          "@type": "xsd:integer"
+        },
+        "reviewCount": {
+          "@id": "schema:reviewCount",
+          "@type": "xsd:integer"
+        }
+      }
+    }
+  }
+}
