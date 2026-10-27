@@ -1,0 +1,6 @@
+# Secrets: local, generated on first use by scripts/secrets.sh
+.env
+.env.*
+!.env.example
+# Docker data backups (scripts/stack.sh)
+backups/
