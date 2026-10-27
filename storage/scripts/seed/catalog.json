@@ -1,0 +1,5659 @@
+{
+  "people": [
+    {
+      "key": "owner",
+      "name": "Olivia Owner",
+      "email": "catalog.owner@example.com"
+    },
+    {
+      "key": "maya",
+      "name": "Maya Chen",
+      "email": "catalog.maya@example.com"
+    },
+    {
+      "key": "noah",
+      "name": "Noah Williams",
+      "email": "catalog.noah@example.com"
+    },
+    {
+      "key": "priya",
+      "name": "Priya Patel",
+      "email": "catalog.priya@example.com"
+    },
+    {
+      "key": "liam",
+      "name": "Liam O'Connor",
+      "email": "catalog.liam@example.com"
+    },
+    {
+      "key": "sofia",
+      "name": "Sofia Rossi",
+      "email": "catalog.sofia@example.com"
+    },
+    {
+      "key": "ethan",
+      "name": "Ethan Brown",
+      "email": "catalog.ethan@example.com"
+    },
+    {
+      "key": "zara",
+      "name": "Zara Khan",
+      "email": "catalog.zara@example.com"
+    },
+    {
+      "key": "lucas",
+      "name": "Lucas Martin",
+      "email": "catalog.lucas@example.com"
+    }
+  ],
+  "products": [
+    {
+      "owner": "owner",
+      "name": "Aria Studio Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-0",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000000",
+      "sku": "AUD-1000",
+      "mpn": "AUD-1000-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ],
+      "photo": {
+        "from": "#1d4ed8",
+        "to": "#60a5fa"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Studio Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-1",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000001",
+      "sku": "AUD-1001",
+      "mpn": "AUD-1001-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Studio Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-2",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000002",
+      "sku": "AUD-1002",
+      "mpn": "AUD-1002-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Studio Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-3",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000003",
+      "sku": "AUD-1003",
+      "mpn": "AUD-1003-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Portable Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-4",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000004",
+      "sku": "AUD-1004",
+      "mpn": "AUD-1004-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Portable Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-5",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000005",
+      "sku": "AUD-1005",
+      "mpn": "AUD-1005-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Portable Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-6",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000006",
+      "sku": "AUD-1006",
+      "mpn": "AUD-1006-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Portable Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-7",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000007",
+      "sku": "AUD-1007",
+      "mpn": "AUD-1007-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Wireless Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-8",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000008",
+      "sku": "AUD-1008",
+      "mpn": "AUD-1008-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Wireless Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-9",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000009",
+      "sku": "AUD-1009",
+      "mpn": "AUD-1009-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Wireless Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-10",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000010",
+      "sku": "AUD-1010",
+      "mpn": "AUD-1010-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Wireless Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-11",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000011",
+      "sku": "AUD-1011",
+      "mpn": "AUD-1011-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Compact Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-12",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000012",
+      "sku": "AUD-1012",
+      "mpn": "AUD-1012-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Compact Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-13",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000013",
+      "sku": "AUD-1013",
+      "mpn": "AUD-1013-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Compact Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-14",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000014",
+      "sku": "AUD-1014",
+      "mpn": "AUD-1014-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Compact Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-15",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000015",
+      "sku": "AUD-1015",
+      "mpn": "AUD-1015-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Premium Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-16",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000016",
+      "sku": "AUD-1016",
+      "mpn": "AUD-1016-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Premium Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-17",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000017",
+      "sku": "AUD-1017",
+      "mpn": "AUD-1017-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Premium Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-18",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000018",
+      "sku": "AUD-1018",
+      "mpn": "AUD-1018-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Premium Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-19",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000019",
+      "sku": "AUD-1019",
+      "mpn": "AUD-1019-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Everyday Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-20",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000020",
+      "sku": "AUD-1020",
+      "mpn": "AUD-1020-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#7c3aed",
+        "to": "#c4b5fd"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Everyday Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-21",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000021",
+      "sku": "AUD-1021",
+      "mpn": "AUD-1021-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Everyday Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-22",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000022",
+      "sku": "AUD-1022",
+      "mpn": "AUD-1022-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Everyday Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-23",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000023",
+      "sku": "AUD-1023",
+      "mpn": "AUD-1023-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Touring Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-24",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000024",
+      "sku": "AUD-1024",
+      "mpn": "AUD-1024-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Touring Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-25",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000025",
+      "sku": "AUD-1025",
+      "mpn": "AUD-1025-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Touring Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-26",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000026",
+      "sku": "AUD-1026",
+      "mpn": "AUD-1026-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Touring Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-27",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000027",
+      "sku": "AUD-1027",
+      "mpn": "AUD-1027-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Smart Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-28",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000028",
+      "sku": "AUD-1028",
+      "mpn": "AUD-1028-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Smart Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-29",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000029",
+      "sku": "AUD-1029",
+      "mpn": "AUD-1029-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Smart Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-30",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000030",
+      "sku": "AUD-1030",
+      "mpn": "AUD-1030-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Smart Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-31",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000031",
+      "sku": "AUD-1031",
+      "mpn": "AUD-1031-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Classic Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-32",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000032",
+      "sku": "AUD-1032",
+      "mpn": "AUD-1032-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Classic Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-33",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000033",
+      "sku": "AUD-1033",
+      "mpn": "AUD-1033-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Classic Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-34",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000034",
+      "sku": "AUD-1034",
+      "mpn": "AUD-1034-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Classic Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-35",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000035",
+      "sku": "AUD-1035",
+      "mpn": "AUD-1035-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Pro Headphones",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-36",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000036",
+      "sku": "AUD-1036",
+      "mpn": "AUD-1036-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Pro Earbuds",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-37",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000037",
+      "sku": "AUD-1037",
+      "mpn": "AUD-1037-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Pro Speaker",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-38",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000038",
+      "sku": "AUD-1038",
+      "mpn": "AUD-1038-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Aria Pro Soundbar",
+      "description": "Wireless audio from Aria, made for everyday listening and comfortable for long sessions.",
+      "url": "https://products.example/audio-39",
+      "category": [
+        "Audio"
+      ],
+      "brand": "Aria",
+      "gtin": "00012345000039",
+      "sku": "AUD-1039",
+      "mpn": "AUD-1039-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Hidden Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-40",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000040",
+      "sku": "BOO-1040",
+      "mpn": "BOO-1040-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#be123c",
+        "to": "#fda4af"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Hidden Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-41",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000041",
+      "sku": "BOO-1041",
+      "mpn": "BOO-1041-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Hidden Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-42",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000042",
+      "sku": "BOO-1042",
+      "mpn": "BOO-1042-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Hidden House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-43",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000043",
+      "sku": "BOO-1043",
+      "mpn": "BOO-1043-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Northern Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-44",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000044",
+      "sku": "BOO-1044",
+      "mpn": "BOO-1044-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Northern Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-45",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000045",
+      "sku": "BOO-1045",
+      "mpn": "BOO-1045-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Northern Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-46",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000046",
+      "sku": "BOO-1046",
+      "mpn": "BOO-1046-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Northern House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-47",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000047",
+      "sku": "BOO-1047",
+      "mpn": "BOO-1047-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Quiet Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-48",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000048",
+      "sku": "BOO-1048",
+      "mpn": "BOO-1048-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Quiet Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-49",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000049",
+      "sku": "BOO-1049",
+      "mpn": "BOO-1049-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Quiet Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-50",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000050",
+      "sku": "BOO-1050",
+      "mpn": "BOO-1050-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Quiet House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-51",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000051",
+      "sku": "BOO-1051",
+      "mpn": "BOO-1051-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Long Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-52",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000052",
+      "sku": "BOO-1052",
+      "mpn": "BOO-1052-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Long Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-53",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000053",
+      "sku": "BOO-1053",
+      "mpn": "BOO-1053-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Long Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-54",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000054",
+      "sku": "BOO-1054",
+      "mpn": "BOO-1054-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Long House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-55",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000055",
+      "sku": "BOO-1055",
+      "mpn": "BOO-1055-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Small Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-56",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000056",
+      "sku": "BOO-1056",
+      "mpn": "BOO-1056-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Small Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-57",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000057",
+      "sku": "BOO-1057",
+      "mpn": "BOO-1057-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Small Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-58",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000058",
+      "sku": "BOO-1058",
+      "mpn": "BOO-1058-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Small House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-59",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000059",
+      "sku": "BOO-1059",
+      "mpn": "BOO-1059-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Last Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-60",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000060",
+      "sku": "BOO-1060",
+      "mpn": "BOO-1060-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ],
+      "photo": {
+        "from": "#1d4ed8",
+        "to": "#60a5fa"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Last Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-61",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000061",
+      "sku": "BOO-1061",
+      "mpn": "BOO-1061-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Last Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-62",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000062",
+      "sku": "BOO-1062",
+      "mpn": "BOO-1062-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Last House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-63",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000063",
+      "sku": "BOO-1063",
+      "mpn": "BOO-1063-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Bright Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-64",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000064",
+      "sku": "BOO-1064",
+      "mpn": "BOO-1064-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Bright Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-65",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000065",
+      "sku": "BOO-1065",
+      "mpn": "BOO-1065-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Bright Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-66",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000066",
+      "sku": "BOO-1066",
+      "mpn": "BOO-1066-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Bright House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-67",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000067",
+      "sku": "BOO-1067",
+      "mpn": "BOO-1067-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Winter Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-68",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000068",
+      "sku": "BOO-1068",
+      "mpn": "BOO-1068-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Winter Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-69",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000069",
+      "sku": "BOO-1069",
+      "mpn": "BOO-1069-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Winter Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-70",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000070",
+      "sku": "BOO-1070",
+      "mpn": "BOO-1070-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Winter House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-71",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000071",
+      "sku": "BOO-1071",
+      "mpn": "BOO-1071-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Field Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-72",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000072",
+      "sku": "BOO-1072",
+      "mpn": "BOO-1072-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Field Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-73",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000073",
+      "sku": "BOO-1073",
+      "mpn": "BOO-1073-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Field Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-74",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000074",
+      "sku": "BOO-1074",
+      "mpn": "BOO-1074-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press Field House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-75",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000075",
+      "sku": "BOO-1075",
+      "mpn": "BOO-1075-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press City Garden",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-76",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000076",
+      "sku": "BOO-1076",
+      "mpn": "BOO-1076-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press City Journey",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-77",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000077",
+      "sku": "BOO-1077",
+      "mpn": "BOO-1077-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press City Letters",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-78",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000078",
+      "sku": "BOO-1078",
+      "mpn": "BOO-1078-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Folio Press City House",
+      "description": "A Folio Press edition, printed on warm paper with a sturdy binding made to be read and reread.",
+      "url": "https://products.example/books-79",
+      "category": [
+        "Books"
+      ],
+      "brand": "Folio Press",
+      "gtin": "00012345000079",
+      "sku": "BOO-1079",
+      "mpn": "BOO-1079-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Pocket Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-80",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000080",
+      "sku": "ELE-1080",
+      "mpn": "ELE-1080-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#7c3aed",
+        "to": "#c4b5fd"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Pocket Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-81",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000081",
+      "sku": "ELE-1081",
+      "mpn": "ELE-1081-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Pocket Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-82",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000082",
+      "sku": "ELE-1082",
+      "mpn": "ELE-1082-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Pocket Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-83",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000083",
+      "sku": "ELE-1083",
+      "mpn": "ELE-1083-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Smart Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-84",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000084",
+      "sku": "ELE-1084",
+      "mpn": "ELE-1084-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Smart Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-85",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000085",
+      "sku": "ELE-1085",
+      "mpn": "ELE-1085-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Smart Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-86",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000086",
+      "sku": "ELE-1086",
+      "mpn": "ELE-1086-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Smart Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-87",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000087",
+      "sku": "ELE-1087",
+      "mpn": "ELE-1087-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Solar Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-88",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000088",
+      "sku": "ELE-1088",
+      "mpn": "ELE-1088-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Solar Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-89",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000089",
+      "sku": "ELE-1089",
+      "mpn": "ELE-1089-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Solar Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-90",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000090",
+      "sku": "ELE-1090",
+      "mpn": "ELE-1090-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Solar Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-91",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000091",
+      "sku": "ELE-1091",
+      "mpn": "ELE-1091-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Travel Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-92",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000092",
+      "sku": "ELE-1092",
+      "mpn": "ELE-1092-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Travel Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-93",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000093",
+      "sku": "ELE-1093",
+      "mpn": "ELE-1093-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Travel Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-94",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000094",
+      "sku": "ELE-1094",
+      "mpn": "ELE-1094-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Travel Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-95",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000095",
+      "sku": "ELE-1095",
+      "mpn": "ELE-1095-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Desk Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-96",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000096",
+      "sku": "ELE-1096",
+      "mpn": "ELE-1096-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Desk Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-97",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000097",
+      "sku": "ELE-1097",
+      "mpn": "ELE-1097-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Desk Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-98",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000098",
+      "sku": "ELE-1098",
+      "mpn": "ELE-1098-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Desk Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-99",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000099",
+      "sku": "ELE-1099",
+      "mpn": "ELE-1099-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Home Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-100",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000100",
+      "sku": "ELE-1100",
+      "mpn": "ELE-1100-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#be123c",
+        "to": "#fda4af"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Home Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-101",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000101",
+      "sku": "ELE-1101",
+      "mpn": "ELE-1101-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Home Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-102",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000102",
+      "sku": "ELE-1102",
+      "mpn": "ELE-1102-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Home Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-103",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000103",
+      "sku": "ELE-1103",
+      "mpn": "ELE-1103-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Mini Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-104",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000104",
+      "sku": "ELE-1104",
+      "mpn": "ELE-1104-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Mini Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-105",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000105",
+      "sku": "ELE-1105",
+      "mpn": "ELE-1105-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Mini Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-106",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000106",
+      "sku": "ELE-1106",
+      "mpn": "ELE-1106-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Mini Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-107",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000107",
+      "sku": "ELE-1107",
+      "mpn": "ELE-1107-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Ultra Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-108",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000108",
+      "sku": "ELE-1108",
+      "mpn": "ELE-1108-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Ultra Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-109",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000109",
+      "sku": "ELE-1109",
+      "mpn": "ELE-1109-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Ultra Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-110",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000110",
+      "sku": "ELE-1110",
+      "mpn": "ELE-1110-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Ultra Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-111",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000111",
+      "sku": "ELE-1111",
+      "mpn": "ELE-1111-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Eco Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-112",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000112",
+      "sku": "ELE-1112",
+      "mpn": "ELE-1112-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Eco Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-113",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000113",
+      "sku": "ELE-1113",
+      "mpn": "ELE-1113-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Eco Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-114",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000114",
+      "sku": "ELE-1114",
+      "mpn": "ELE-1114-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Eco Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-115",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000115",
+      "sku": "ELE-1115",
+      "mpn": "ELE-1115-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Flex Charger",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-116",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000116",
+      "sku": "ELE-1116",
+      "mpn": "ELE-1116-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Flex Lamp",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-117",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000117",
+      "sku": "ELE-1117",
+      "mpn": "ELE-1117-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Flex Hub",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-118",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000118",
+      "sku": "ELE-1118",
+      "mpn": "ELE-1118-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Lumen Flex Monitor",
+      "description": "A compact Lumen device with thoughtful controls and the connections you need every day.",
+      "url": "https://products.example/electronics-119",
+      "category": [
+        "Electronics"
+      ],
+      "brand": "Lumen",
+      "gtin": "00012345000119",
+      "sku": "ELE-1119",
+      "mpn": "ELE-1119-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Linen Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-120",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000120",
+      "sku": "HOM-1120",
+      "mpn": "HOM-1120-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ],
+      "photo": {
+        "from": "#1d4ed8",
+        "to": "#60a5fa"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Linen Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-121",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000121",
+      "sku": "HOM-1121",
+      "mpn": "HOM-1121-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Linen Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-122",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000122",
+      "sku": "HOM-1122",
+      "mpn": "HOM-1122-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Linen Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-123",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000123",
+      "sku": "HOM-1123",
+      "mpn": "HOM-1123-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Cedar Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-124",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000124",
+      "sku": "HOM-1124",
+      "mpn": "HOM-1124-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Cedar Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-125",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000125",
+      "sku": "HOM-1125",
+      "mpn": "HOM-1125-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Cedar Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-126",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000126",
+      "sku": "HOM-1126",
+      "mpn": "HOM-1126-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Cedar Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-127",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000127",
+      "sku": "HOM-1127",
+      "mpn": "HOM-1127-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Stone Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-128",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000128",
+      "sku": "HOM-1128",
+      "mpn": "HOM-1128-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Stone Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-129",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000129",
+      "sku": "HOM-1129",
+      "mpn": "HOM-1129-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Stone Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-130",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000130",
+      "sku": "HOM-1130",
+      "mpn": "HOM-1130-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Stone Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-131",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000131",
+      "sku": "HOM-1131",
+      "mpn": "HOM-1131-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Woven Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-132",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000132",
+      "sku": "HOM-1132",
+      "mpn": "HOM-1132-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Woven Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-133",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000133",
+      "sku": "HOM-1133",
+      "mpn": "HOM-1133-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Woven Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-134",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000134",
+      "sku": "HOM-1134",
+      "mpn": "HOM-1134-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Woven Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-135",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000135",
+      "sku": "HOM-1135",
+      "mpn": "HOM-1135-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Soft Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-136",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000136",
+      "sku": "HOM-1136",
+      "mpn": "HOM-1136-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Soft Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-137",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000137",
+      "sku": "HOM-1137",
+      "mpn": "HOM-1137-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Soft Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-138",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000138",
+      "sku": "HOM-1138",
+      "mpn": "HOM-1138-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Soft Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-139",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000139",
+      "sku": "HOM-1139",
+      "mpn": "HOM-1139-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Modern Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-140",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000140",
+      "sku": "HOM-1140",
+      "mpn": "HOM-1140-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#7c3aed",
+        "to": "#c4b5fd"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Modern Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-141",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000141",
+      "sku": "HOM-1141",
+      "mpn": "HOM-1141-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Modern Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-142",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000142",
+      "sku": "HOM-1142",
+      "mpn": "HOM-1142-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Modern Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-143",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000143",
+      "sku": "HOM-1143",
+      "mpn": "HOM-1143-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Rustic Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-144",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000144",
+      "sku": "HOM-1144",
+      "mpn": "HOM-1144-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Rustic Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-145",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000145",
+      "sku": "HOM-1145",
+      "mpn": "HOM-1145-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Rustic Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-146",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000146",
+      "sku": "HOM-1146",
+      "mpn": "HOM-1146-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Rustic Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-147",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000147",
+      "sku": "HOM-1147",
+      "mpn": "HOM-1147-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Coastal Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-148",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000148",
+      "sku": "HOM-1148",
+      "mpn": "HOM-1148-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Coastal Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-149",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000149",
+      "sku": "HOM-1149",
+      "mpn": "HOM-1149-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Coastal Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-150",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000150",
+      "sku": "HOM-1150",
+      "mpn": "HOM-1150-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Coastal Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-151",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000151",
+      "sku": "HOM-1151",
+      "mpn": "HOM-1151-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Alpine Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-152",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000152",
+      "sku": "HOM-1152",
+      "mpn": "HOM-1152-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Alpine Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-153",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000153",
+      "sku": "HOM-1153",
+      "mpn": "HOM-1153-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Alpine Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-154",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000154",
+      "sku": "HOM-1154",
+      "mpn": "HOM-1154-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Alpine Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-155",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000155",
+      "sku": "HOM-1155",
+      "mpn": "HOM-1155-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Daily Throw",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-156",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000156",
+      "sku": "HOM-1156",
+      "mpn": "HOM-1156-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Daily Cushion",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-157",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000157",
+      "sku": "HOM-1157",
+      "mpn": "HOM-1157-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Daily Bowl",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-158",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000158",
+      "sku": "HOM-1158",
+      "mpn": "HOM-1158-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Haven Daily Basket",
+      "description": "A Haven home piece with a calm, practical design and materials chosen to last.",
+      "url": "https://products.example/home-159",
+      "category": [
+        "Home"
+      ],
+      "brand": "Haven",
+      "gtin": "00012345000159",
+      "sku": "HOM-1159",
+      "mpn": "HOM-1159-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Trail Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-160",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000160",
+      "sku": "OUT-1160",
+      "mpn": "OUT-1160-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#be123c",
+        "to": "#fda4af"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Trail Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-161",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000161",
+      "sku": "OUT-1161",
+      "mpn": "OUT-1161-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Trail Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-162",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000162",
+      "sku": "OUT-1162",
+      "mpn": "OUT-1162-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Trail Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-163",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000163",
+      "sku": "OUT-1163",
+      "mpn": "OUT-1163-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Summit Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-164",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000164",
+      "sku": "OUT-1164",
+      "mpn": "OUT-1164-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Summit Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-165",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000165",
+      "sku": "OUT-1165",
+      "mpn": "OUT-1165-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Summit Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-166",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000166",
+      "sku": "OUT-1166",
+      "mpn": "OUT-1166-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Summit Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-167",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000167",
+      "sku": "OUT-1167",
+      "mpn": "OUT-1167-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline River Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-168",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000168",
+      "sku": "OUT-1168",
+      "mpn": "OUT-1168-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline River Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-169",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000169",
+      "sku": "OUT-1169",
+      "mpn": "OUT-1169-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline River Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-170",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000170",
+      "sku": "OUT-1170",
+      "mpn": "OUT-1170-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline River Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-171",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000171",
+      "sku": "OUT-1171",
+      "mpn": "OUT-1171-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Forest Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-172",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000172",
+      "sku": "OUT-1172",
+      "mpn": "OUT-1172-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Forest Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-173",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000173",
+      "sku": "OUT-1173",
+      "mpn": "OUT-1173-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Forest Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-174",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000174",
+      "sku": "OUT-1174",
+      "mpn": "OUT-1174-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Forest Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-175",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000175",
+      "sku": "OUT-1175",
+      "mpn": "OUT-1175-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Alpine Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-176",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000176",
+      "sku": "OUT-1176",
+      "mpn": "OUT-1176-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Alpine Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-177",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000177",
+      "sku": "OUT-1177",
+      "mpn": "OUT-1177-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Alpine Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-178",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000178",
+      "sku": "OUT-1178",
+      "mpn": "OUT-1178-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Alpine Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-179",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000179",
+      "sku": "OUT-1179",
+      "mpn": "OUT-1179-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Camp Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-180",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000180",
+      "sku": "OUT-1180",
+      "mpn": "OUT-1180-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ],
+      "photo": {
+        "from": "#1d4ed8",
+        "to": "#60a5fa"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Camp Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-181",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000181",
+      "sku": "OUT-1181",
+      "mpn": "OUT-1181-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Camp Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-182",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000182",
+      "sku": "OUT-1182",
+      "mpn": "OUT-1182-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Camp Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-183",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000183",
+      "sku": "OUT-1183",
+      "mpn": "OUT-1183-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Hiking Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-184",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000184",
+      "sku": "OUT-1184",
+      "mpn": "OUT-1184-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Hiking Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-185",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000185",
+      "sku": "OUT-1185",
+      "mpn": "OUT-1185-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Hiking Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-186",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000186",
+      "sku": "OUT-1186",
+      "mpn": "OUT-1186-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Hiking Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-187",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000187",
+      "sku": "OUT-1187",
+      "mpn": "OUT-1187-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Weather Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-188",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000188",
+      "sku": "OUT-1188",
+      "mpn": "OUT-1188-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Weather Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-189",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000189",
+      "sku": "OUT-1189",
+      "mpn": "OUT-1189-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Weather Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-190",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000190",
+      "sku": "OUT-1190",
+      "mpn": "OUT-1190-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Weather Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-191",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000191",
+      "sku": "OUT-1191",
+      "mpn": "OUT-1191-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Packable Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-192",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000192",
+      "sku": "OUT-1192",
+      "mpn": "OUT-1192-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Packable Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-193",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000193",
+      "sku": "OUT-1193",
+      "mpn": "OUT-1193-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Packable Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-194",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000194",
+      "sku": "OUT-1194",
+      "mpn": "OUT-1194-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Packable Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-195",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000195",
+      "sku": "OUT-1195",
+      "mpn": "OUT-1195-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Insulated Jacket",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-196",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000196",
+      "sku": "OUT-1196",
+      "mpn": "OUT-1196-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Insulated Bottle",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-197",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000197",
+      "sku": "OUT-1197",
+      "mpn": "OUT-1197-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Insulated Backpack",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-198",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000198",
+      "sku": "OUT-1198",
+      "mpn": "OUT-1198-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Northline Insulated Tent",
+      "description": "Northline outdoor gear that is light to carry, easy to pack and ready for changing weather.",
+      "url": "https://products.example/outdoors-199",
+      "category": [
+        "Outdoors"
+      ],
+      "brand": "Northline",
+      "gtin": "00012345000199",
+      "sku": "OUT-1199",
+      "mpn": "OUT-1199-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Wooden Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-200",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000200",
+      "sku": "TOY-1200",
+      "mpn": "TOY-1200-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#7c3aed",
+        "to": "#c4b5fd"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Wooden Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-201",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000201",
+      "sku": "TOY-1201",
+      "mpn": "TOY-1201-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Wooden Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-202",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000202",
+      "sku": "TOY-1202",
+      "mpn": "TOY-1202-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Wooden Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-203",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000203",
+      "sku": "TOY-1203",
+      "mpn": "TOY-1203-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Puzzle Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-204",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000204",
+      "sku": "TOY-1204",
+      "mpn": "TOY-1204-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Puzzle Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-205",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000205",
+      "sku": "TOY-1205",
+      "mpn": "TOY-1205-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Puzzle Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-206",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000206",
+      "sku": "TOY-1206",
+      "mpn": "TOY-1206-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Puzzle Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-207",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000207",
+      "sku": "TOY-1207",
+      "mpn": "TOY-1207-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Build Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-208",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000208",
+      "sku": "TOY-1208",
+      "mpn": "TOY-1208-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Build Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-209",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000209",
+      "sku": "TOY-1209",
+      "mpn": "TOY-1209-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Build Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-210",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000210",
+      "sku": "TOY-1210",
+      "mpn": "TOY-1210-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Build Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-211",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000211",
+      "sku": "TOY-1211",
+      "mpn": "TOY-1211-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Colour Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-212",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000212",
+      "sku": "TOY-1212",
+      "mpn": "TOY-1212-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Colour Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-213",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000213",
+      "sku": "TOY-1213",
+      "mpn": "TOY-1213-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Colour Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-214",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000214",
+      "sku": "TOY-1214",
+      "mpn": "TOY-1214-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Colour Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-215",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000215",
+      "sku": "TOY-1215",
+      "mpn": "TOY-1215-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Magic Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-216",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000216",
+      "sku": "TOY-1216",
+      "mpn": "TOY-1216-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Magic Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-217",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000217",
+      "sku": "TOY-1217",
+      "mpn": "TOY-1217-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Magic Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-218",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000218",
+      "sku": "TOY-1218",
+      "mpn": "TOY-1218-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Magic Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-219",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000219",
+      "sku": "TOY-1219",
+      "mpn": "TOY-1219-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Little Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-220",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000220",
+      "sku": "TOY-1220",
+      "mpn": "TOY-1220-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ],
+      "photo": {
+        "from": "#be123c",
+        "to": "#fda4af"
+      }
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Little Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-221",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000221",
+      "sku": "TOY-1221",
+      "mpn": "TOY-1221-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Little Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-222",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000222",
+      "sku": "TOY-1222",
+      "mpn": "TOY-1222-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Little Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-223",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000223",
+      "sku": "TOY-1223",
+      "mpn": "TOY-1223-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Happy Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-224",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000224",
+      "sku": "TOY-1224",
+      "mpn": "TOY-1224-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "It works, but I expected better.",
+          "rating": 2,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Happy Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-225",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000225",
+      "sku": "TOY-1225",
+      "mpn": "TOY-1225-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        },
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Happy Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-226",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000226",
+      "sku": "TOY-1226",
+      "mpn": "TOY-1226-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Happy Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-227",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000227",
+      "sku": "TOY-1227",
+      "mpn": "TOY-1227-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Clever Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-228",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000228",
+      "sku": "TOY-1228",
+      "mpn": "TOY-1228-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thank you for the detailed review."
+            }
+          ]
+        },
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Clever Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-229",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000229",
+      "sku": "TOY-1229",
+      "mpn": "TOY-1229-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Clever Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-230",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000230",
+      "sku": "TOY-1230",
+      "mpn": "TOY-1230-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Clever Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-231",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000231",
+      "sku": "TOY-1231",
+      "mpn": "TOY-1231-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "Very good, with one small compromise.",
+          "rating": 4
+        },
+        {
+          "author": "priya",
+          "body": "Fine for the price.",
+          "rating": 3
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Giant Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-232",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000232",
+      "sku": "TOY-1232",
+      "mpn": "TOY-1232-BK",
+      "reviews": [
+        {
+          "author": "maya",
+          "body": "Fine for the price.",
+          "rating": 3,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "Thanks for letting us know what you think."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Giant Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-233",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000233",
+      "sku": "TOY-1233",
+      "mpn": "TOY-1233-WH",
+      "reviews": [
+        {
+          "author": "noah",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Giant Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-234",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000234",
+      "sku": "TOY-1234",
+      "mpn": "TOY-1234-GR",
+      "reviews": [
+        {
+          "author": "priya",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        },
+        {
+          "author": "ethan",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Giant Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-235",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000235",
+      "sku": "TOY-1235",
+      "mpn": "TOY-1235-BL",
+      "reviews": [
+        {
+          "author": "liam",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Travel Blocks",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-236",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000236",
+      "sku": "TOY-1236",
+      "mpn": "TOY-1236-BK",
+      "reviews": [
+        {
+          "author": "sofia",
+          "body": "Very good, with one small compromise.",
+          "rating": 4,
+          "comments": [
+            {
+              "by": "owner",
+              "text": "We appreciate the feedback."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Travel Set",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-237",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000237",
+      "sku": "TOY-1237",
+      "mpn": "TOY-1237-WH",
+      "reviews": [
+        {
+          "author": "ethan",
+          "body": "Fine for the price.",
+          "rating": 3
+        },
+        {
+          "author": "maya",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Travel Kit",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-238",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000238",
+      "sku": "TOY-1238",
+      "mpn": "TOY-1238-GR",
+      "reviews": [
+        {
+          "author": "zara",
+          "body": "Excellent product. It works exactly as described.",
+          "rating": 5
+        }
+      ]
+    },
+    {
+      "owner": "owner",
+      "name": "Playworks Travel Game",
+      "description": "A Playworks toy designed for open-ended play, curious hands and many happy afternoons.",
+      "url": "https://products.example/toys-239",
+      "category": [
+        "Toys"
+      ],
+      "brand": "Playworks",
+      "gtin": "00012345000239",
+      "sku": "TOY-1239",
+      "mpn": "TOY-1239-BL",
+      "reviews": [
+        {
+          "author": "lucas",
+          "body": "It works, but I expected better.",
+          "rating": 2
+        }
+      ]
+    }
+  ]
+}

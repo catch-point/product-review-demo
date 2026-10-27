@@ -1,0 +1,178 @@
+spring:
+  application:
+    name: storage
+  # Database roles. The service connects as reviews_service, which only
+  # reads and writes rows (database.ServiceRole sets it up after every
+  # migration). Migrations connect as reviews_owner, which owns the schema
+  # and the journal and is not a superuser (db/owner.sql, run by the
+  # database's superuser, makes it). Neither password has a default: both
+  # must come from the root .env (scripts/secrets.sh), exported or through
+  # launch.json's envFile; Docker sets them itself (storage/compose.yaml),
+  # and gives the service only its own. Without them the service refuses to
+  # start (config.RequiredSecretsEnvironmentPostProcessor), unless
+  # reviews.require-secrets is false, as for the tests.
+  datasource:
+    # The storage database as storage/compose.yaml publishes it (STORAGE_DB_PORT).
+    url: jdbc:postgresql://localhost:5433/reviews
+    username: reviews_service
+    password: ${STORAGE_DB_SERVICE_PASSWORD}
+    # A request that cannot get a connection this soon fails with 503
+    # (web.ApiExceptionHandler), rather than queueing behind the others.
+    hikari:
+      connection-timeout: 5000 # ms
+  # And so does a statement that runs longer (cancelled by the driver).
+  jdbc:
+    template:
+      query-timeout: 10s
+  threads:
+    virtual:
+      enabled: true
+  # Run at startup here; in Docker by the storage-migrate container instead
+  # (ca.leighnet.reviews.migrate.Migrate), and the service has them off.
+  flyway:
+    user: reviews_owner
+    password: ${STORAGE_DB_OWNER_PASSWORD}
+  # schema.sql is applied by Flyway (db.migration.V1__Review), never by
+  # Spring's SQL initializer, which cannot parse its $$-quoted functions.
+  sql:
+    init:
+      mode: never
+  # Caches of database rows (see ca.leighnet.reviews.storage.cache). Changes
+  # evict entries at once; the TTL bounds any entry an eviction missed.
+  cache:
+    cache-names: products, reviews, reviewComments, comments, people, personIds, ownership, categories
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=60s,recordStats
+  # Request bodies are bounded before Jackson reads them (reviews.requests);
+  # these bound what it reads in any JSON, those bodies included: no field is
+  # longer than 10000 characters, and no document is nested deeply.
+  jackson:
+    factory:
+      constraints:
+        read:
+          max-document-length: 1048576
+          max-string-length: 20000
+          max-name-length: 1000
+          max-number-length: 100
+          max-nesting-depth: 32
+  # Spring Boot Admin (storage/admin); compose enables it.
+  boot:
+    admin:
+      client:
+        enabled: false
+        url: http://localhost:8095
+        username: admin
+        # No default: from the root .env when exported (scripts/secrets.sh);
+        # Docker still overrides with SPRING_BOOT_ADMIN_CLIENT_PASSWORD
+        # (storage/compose.yaml). Required only when the client is enabled.
+        password: ${ADMIN_PASSWORD}
+        # And the actuator's account, which the server then reads this
+        # service's actuator with (it masks *password metadata in its UI).
+        instance:
+          metadata:
+            "[user.name]": ${reviews.actuator.username}
+            "[user.password]": ${reviews.actuator.password}
+  # Bearer tokens: set spring.security.oauth2.resourceserver.jwt.issuer-uri to
+  # the identity provider (the identity project's Keycloak realm), with
+  # jwk-set-uri where its keys are reached at another address and audiences
+  # (storage); and, for development, reviews.security.dev-tokens with
+  # reviews.security.jwt-secret (config.BearerTokenDecoder).
+
+server:
+  forward-headers-strategy: framework
+  max-http-request-header-size: 8KB
+  tomcat:
+    # A slow client may take this long between reads before it is cut off.
+    connection-timeout: 20s
+    # Of a body refused unread (as with 413), read at most this much before
+    # closing the connection, so the client sees the response.
+    max-swallow-size: 64KB
+    max-http-form-post-size: 64KB
+    # An upload is one file part; allow a few, with short headers.
+    max-part-count: 5
+    max-part-header-size: 1KB
+
+# Actuator runs on its own port (8081), which is not published outside Docker:
+# only Spring Boot Admin and other containers reach it. The API port serves
+# just the probes, as /livez and /readyz.
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, caches, loggers, threaddump, env, configprops, mappings, flyway, beans, conditions, scheduledtasks
+    # No endpoint may change anything (POST or DELETE), even signed in, but
+    # those Spring Boot Admin acts through: log levels and clearing caches.
+    access:
+      default: read-only
+  endpoint:
+    loggers:
+      access: unrestricted
+    caches:
+      access: unrestricted
+    health:
+      # The status for anyone (it is open: config.SecurityConfig); its
+      # components only with the actuator's account, as Spring Boot Admin
+      # presents it.
+      show-details: when-authorized
+      probes:
+        enabled: true
+        add-additional-paths: true
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+reviews:
+  # Refuse to start without the passwords above (config.RequiredSecretsEnvironmentPostProcessor).
+  require-secrets: true
+  # The actuator's one account (config.ActuatorProperties): every endpoint
+  # but health and info needs it, over HTTP Basic. Its password has no
+  # default either: ACTUATOR_PASSWORD, from the root .env.
+  actuator:
+    username: actuator
+    password: ${ACTUATOR_PASSWORD}
+  security:
+    email-claim: email
+    role-claim: role
+    roles-claim: roles
+    admin-role: admin
+    # Development tokens (scripts/dev-token.sh, used by the seed scripts):
+    # off unless DEV_TOKENS=true (in .env, which launch.json's envFile and
+    # compose read), as anyone with JWT_SECRET can sign one for anyone.
+    # Compose passes both as REVIEWS_SECURITY_* (compose.yaml).
+    dev-tokens: ${DEV_TOKENS:false}
+    # Their HS256 secret, JWT_SECRET from .env (config.SecurityConfig).
+    jwt-secret: ${JWT_SECRET:}
+  cors:
+    allowed-origins: []
+  requests:
+    # JSON bodies; image uploads have images.max-size (plus their encoding).
+    max-body-size: 64KB
+    # Addresses (or CIDR ranges) whose X-Forwarded-For names the client, as
+    # the presentation server's does (compose sets it); none by default.
+    trusted-proxies: []
+  # Requests a minute, per signed-in person or else per client address.
+  rate-limits:
+    enabled: true
+    reads-per-minute: 600
+    writes-per-minute: 60
+    uploads-per-minute: 10
+  images:
+    max-size: 5MB
+    max-pixels: 40000000
+    # The images' bytes are objects in this bucket (image.ImageStore): MinIO,
+    # whose S3 API storage/compose.yaml publishes on :9100 for local runs (in
+    # Docker, http://storage-minio:9000). The service's own MinIO user may
+    # read, write and list it (storage/minio/init.sh); its secret comes from
+    # the root .env, and the service refuses to start without it.
+    store:
+      endpoint: http://localhost:9100
+      bucket: review-images
+      access-key: reviews-images
+      secret-key: ${MINIO_IMAGES_SECRET_KEY:}
+  concurrency:
+    # PUT and DELETE need If-Match (or If-Unmodified-Since); without it, 428.
+    require-preconditions: true

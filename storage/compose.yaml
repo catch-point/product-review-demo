@@ -1,0 +1,216 @@
+# The storage service and its own PostgreSQL database.
+#
+# Run it with the identity project from the repository root (secrets come
+# from .env; run scripts/secrets.sh once first):
+#   docker compose up -d --build
+# or alone, against a Keycloak reachable at KEYCLOAK_INTERNAL_URL. Published
+# ports bind to 127.0.0.1 by default (BIND_ADDRESS), which a container cannot
+# reach through the host gateway, so widen Keycloak's binding too:
+#   KEYCLOAK_INTERNAL_URL=http://host.docker.internal:8180 docker compose up -d --build
+
+# MinIO, as Chainguard rebuilds it from MinIO's source: MinIO no longer
+# publishes images of its community edition, and Chainguard's free tier is
+# its latest build alone, so it is pinned by digest. The image has mc (the
+# MinIO client) and bash too, for storage-minio-init and scripts/stack.sh.
+x-minio-image: &minio-image cgr.dev/chainguard/minio:latest@sha256:ad134b2dd572ae0d989d6807c3e45516cc75a34883a8021db2ff04be5d1d496a
+
+services:
+  # Three roles: postgres, the superuser, used only to make the schema's
+  # owner (storage-db-roles); reviews_owner, which owns the schema and runs
+  # the migrations (storage-migrate) but is not a superuser; and
+  # reviews_service, which the service connects as.
+  storage-db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: reviews
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${STORAGE_DB_PASSWORD:?run scripts/secrets.sh}
+    volumes:
+      - storage-db:/var/lib/postgresql
+    # For running the service outside Docker (the VS Code "Storage: Debug" launch).
+    ports:
+      - "127.0.0.1:${STORAGE_DB_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d reviews"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      # A new volume is initialised first (initdb), which on a busy machine,
+      # such as CI building every image at once, outlasts the retries.
+      start_period: 3m
+      start_interval: 1s
+
+  # As the superuser, makes the schema's owner, reviews_owner, and gives it
+  # the database and everything in it (db/owner.sql), then exits. Only this
+  # container and the database have the superuser's password.
+  storage-db-roles:
+    image: postgres:18-alpine
+    command: ["psql", "-h", "storage-db", "-U", "postgres", "-d", "reviews", "-v", "ON_ERROR_STOP=1",
+              "-v", "owner=reviews_owner", "-v", "service=reviews_service", "-f", "/owner.sql"]
+    environment:
+      PGPASSWORD: ${STORAGE_DB_PASSWORD:?run scripts/secrets.sh}
+      STORAGE_DB_OWNER_PASSWORD: ${STORAGE_DB_OWNER_PASSWORD:?run scripts/secrets.sh}
+    volumes:
+      - ./db/owner.sql:/owner.sql:ro
+    depends_on:
+      storage-db:
+        condition: service_healthy
+    restart: "no"
+
+  # Migrates the schema as its owner (reviews_owner), sets up the service's
+  # own role (reviews_service: rows only, never the schema or the journal),
+  # then exits. Only this container has the owner's password; the service
+  # starts once it has finished, and connects with the service role's.
+  storage-migrate:
+    build:
+      context: ..
+      dockerfile: storage/Dockerfile
+    entrypoint: ["java", "-cp", "BOOT-INF/classes:BOOT-INF/lib/*", "ca.leighnet.reviews.migrate.Migrate"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://storage-db:5432/reviews
+      SPRING_DATASOURCE_USERNAME: reviews_service
+      SPRING_DATASOURCE_PASSWORD: ${STORAGE_DB_SERVICE_PASSWORD:?run scripts/secrets.sh}
+      SPRING_FLYWAY_USER: reviews_owner
+      SPRING_FLYWAY_PASSWORD: ${STORAGE_DB_OWNER_PASSWORD:?run scripts/secrets.sh}
+    healthcheck:
+      disable: true
+    depends_on:
+      storage-db-roles:
+        condition: service_completed_successfully
+    restart: "no"
+
+  # The images' bytes: objects in the review-images bucket, named by their
+  # SHA-256 (image.ImageStore). Its S3 API is published on 127.0.0.1 only,
+  # for running the service outside Docker; nothing serves images from it
+  # directly. The root credentials are for storage-minio-init, backups and
+  # restores alone.
+  storage-minio:
+    image: *minio-image
+    command: ["server", "/data"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?run scripts/secrets.sh}
+      MINIO_BROWSER: "off"
+    volumes:
+      - storage-minio:/data
+    ports:
+      - "127.0.0.1:${STORAGE_MINIO_PORT:-9100}:9000"
+    healthcheck:
+      # No curl in the image: ask with bash's /dev/tcp.
+      test:
+        - CMD
+        - bash
+        - -c
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /minio/health/live HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          read -r status <&3 && [[ $$status == *" 200 "* ]]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  # With the root credentials, makes the bucket (private) and the service's
+  # user, reviews-images, which may read, write and list it and nothing else
+  # (minio/init.sh), then exits. Run again, it sets that user's secret anew.
+  storage-minio-init:
+    image: *minio-image
+    entrypoint: ["bash", "/init.sh"]
+    environment:
+      MINIO_URL: http://storage-minio:9000
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?run scripts/secrets.sh}
+      IMAGES_BUCKET: review-images
+      IMAGES_ACCESS_KEY: reviews-images
+      IMAGES_SECRET_KEY: ${MINIO_IMAGES_SECRET_KEY:?run scripts/secrets.sh}
+    volumes:
+      - ./minio/init.sh:/init.sh:ro
+    depends_on:
+      storage-minio:
+        condition: service_healthy
+    restart: "no"
+
+  storage:
+    build:
+      context: ..
+      dockerfile: storage/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://storage-db:5432/reviews
+      SPRING_DATASOURCE_USERNAME: reviews_service
+      SPRING_DATASOURCE_PASSWORD: ${STORAGE_DB_SERVICE_PASSWORD:?run scripts/secrets.sh}
+      # storage-migrate has migrated the schema; the service cannot.
+      SPRING_FLYWAY_ENABLED: "false"
+      # People's tokens, from the identity project's Keycloak: the issuer is
+      # the URL browsers use, the keys are fetched on the Compose network.
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${KEYCLOAK_URL:-http://localhost:8180}/realms/reviews
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: ${KEYCLOAK_INTERNAL_URL:-http://keycloak:8080}/realms/reviews/protocol/openid-connect/certs
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES: storage
+      # Development tokens too (scripts/dev-token.sh, used by the seed scripts),
+      # signed with JWT_SECRET from .env (scripts/secrets.sh), but only when
+      # DEV_TOKENS=true (in .env, or the environment): anyone holding the
+      # secret can sign a token for anyone. Never in production.
+      REVIEWS_SECURITY_DEV_TOKENS: ${DEV_TOKENS:-false}
+      REVIEWS_SECURITY_JWT_SECRET: ${JWT_SECRET-}
+      REVIEWS_CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-}
+      # The images' bucket, as its own user (storage-minio-init).
+      REVIEWS_IMAGES_STORE_ENDPOINT: http://storage-minio:9000
+      REVIEWS_IMAGES_STORE_BUCKET: review-images
+      REVIEWS_IMAGES_STORE_ACCESS_KEY: reviews-images
+      REVIEWS_IMAGES_STORE_SECRET_KEY: ${MINIO_IMAGES_SECRET_KEY:?run scripts/secrets.sh}
+      REVIEWS_IMAGES_MAX_SIZE: ${IMAGE_MAX_SIZE:-5MB}
+      REVIEWS_IMAGES_MAX_PIXELS: ${IMAGE_MAX_PIXELS:-40000000}
+      REVIEWS_CONCURRENCY_REQUIRE_PRECONDITIONS: ${REQUIRE_PRECONDITIONS:-true}
+      # The presentation server names each request's client in X-Forwarded-For;
+      # from any other address the header is ignored.
+      REVIEWS_REQUESTS_TRUSTED_PROXIES: ${PRESENTATION_ADDRESS:-172.31.250.10}
+      REVIEWS_RATE_LIMITS_READS_PER_MINUTE: ${RATE_LIMIT_READS:-600}
+      REVIEWS_RATE_LIMITS_WRITES_PER_MINUTE: ${RATE_LIMIT_WRITES:-60}
+      REVIEWS_RATE_LIMITS_UPLOADS_PER_MINUTE: ${RATE_LIMIT_UPLOADS:-10}
+      # Register with Spring Boot Admin. It reads actuator on the management
+      # port, 8081, which is reachable only on this Docker network, and only
+      # with the actuator's account.
+      SPRING_BOOT_ADMIN_CLIENT_ENABLED: "true"
+      SPRING_BOOT_ADMIN_CLIENT_URL: http://storage-admin:8080
+      SPRING_BOOT_ADMIN_CLIENT_USERNAME: ${ADMIN_USERNAME:-admin}
+      SPRING_BOOT_ADMIN_CLIENT_PASSWORD: ${ADMIN_PASSWORD:?run scripts/secrets.sh}
+      # The actuator's own account, which Spring Boot Admin is given with the
+      # registration (application.yml); every endpoint but health and info
+      # needs it.
+      REVIEWS_ACTUATOR_PASSWORD: ${ACTUATOR_PASSWORD:?run scripts/secrets.sh}
+      SPRING_BOOT_ADMIN_CLIENT_INSTANCE_MANAGEMENT_BASE_URL: http://storage:8081
+      SPRING_BOOT_ADMIN_CLIENT_INSTANCE_SERVICE_BASE_URL: http://localhost:${STORAGE_HTTP_PORT:-8080}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${STORAGE_HTTP_PORT:-8080}:8080"
+    networks: [default, backchannel]
+    depends_on:
+      storage-migrate:
+        condition: service_completed_successfully
+      storage-minio-init:
+        condition: service_completed_successfully
+      keycloak:
+        condition: service_healthy
+        required: false
+    restart: unless-stopped
+
+  # Spring Boot Admin: a UI over the storage service's actuator endpoints.
+  storage-admin:
+    build:
+      context: ..
+      dockerfile: storage/admin/Dockerfile
+    environment:
+      SPRING_SECURITY_USER_NAME: ${ADMIN_USERNAME:-admin}
+      SPRING_SECURITY_USER_PASSWORD: ${ADMIN_PASSWORD:?run scripts/secrets.sh}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${ADMIN_HTTP_PORT:-8095}:8080"
+    restart: unless-stopped
+
+volumes:
+  storage-db:
+  storage-minio:
+
+networks:
+  # Where the presentation server reaches this service (presentation/compose.yaml).
+  backchannel:
+    ipam:
+      config:
+        - subnet: ${BACKCHANNEL_SUBNET:-172.31.250.0/28}

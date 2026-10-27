@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: admin
+  security:
+    user:
+      # The name, but not the password: there is no default password here.
+      # In Docker compose sets SPRING_SECURITY_USER_PASSWORD from
+      # ADMIN_PASSWORD (.env). Run outside Docker without one, Spring Boot
+      # generates a random password and prints it at startup.
+      name: admin
+  boot:
+    admin:
+      ui:
+        title: Product Reviews Admin
+
+server:
+  port: 8080
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
