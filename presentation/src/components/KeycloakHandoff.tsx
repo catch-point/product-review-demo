@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
+import { safePath } from "@/lib/safe-path";
 import { useSessionQuery } from "@/store/auth";
 import { homeOf } from "./RequireSession";
 import { ErrorMessage, FormCard, Spinner } from "./ui";
@@ -37,7 +38,7 @@ export function KeycloakHandoff({ kind }: { kind: "login" | "register" }) {
       return;
     }
     if (session) {
-      router.replace(next?.startsWith("/") && !next.startsWith("//") ? next : homeOf(session.role));
+      router.replace(safePath(next) ?? homeOf(session.role));
     } else if (!error) {
       window.location.replace(target);
     }

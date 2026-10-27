@@ -42,8 +42,8 @@ export default function AboutPage() {
             events for cross-process consistency.
           </li>
           <li>
-            <strong>Append-only Audit:</strong> Triggers record every change with actor/txid; journal is tamper-evident and
-            not exposed via API.
+            <strong>Append-only Audit:</strong> Triggers record every change, with its actor and transaction, in a journal
+            the service can neither skip nor change; it is not exposed via the API.
           </li>
           <li>
             <strong>Soft Delete:</strong> Discontinued products hidden from discovery while preserving reviews and replies.
@@ -104,16 +104,21 @@ export default function AboutPage() {
           Browse Products
         </Link>
         <a
-          href="https://github.com/anomalyco/opencode"
+          href="https://github.com/catch-point/product-review-demo"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
         >
           View Repository
         </a>
-        <Link href="/docs/DESIGN.md" className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50">
+        <a
+          href="https://github.com/catch-point/product-review-demo/blob/main/docs/DESIGN.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
+        >
           Design Docs
-        </Link>
+        </a>
       </div>
     </div>
   );
