@@ -9,7 +9,7 @@ test("a product's pages are titled with its name", async ({ signUp, allowErrors 
     const { id, name }: { id: string; name: string } = listing.member[0];
     const html = await (await reviewer.request.get(`/products/${id.replace(/.*\//, "")}`)).text();
     const escaped = name.replace(/&/g, "&amp;").replace(/'/g, "&#x27;");
-    expect(html).toContain(`<title>${escaped} · Product Reviews</title>`);
+    expect(html).toContain(`<title>${escaped} · Product Reviews • Portfolio Demo</title>`);
   });
 
   await test.step("navigating in the application, and Back and Forward", async () => {
@@ -19,11 +19,11 @@ test("a product's pages are titled with its name", async ({ signUp, allowErrors 
     await expect(reviewer).toHaveTitle("Products");
     await card.getByRole("link", { name: "Details" }).click();
     await reviewer.waitForURL(/\/products\/\d+$/);
-    await expect(reviewer).toHaveTitle(`${name} · Product Reviews`);
+    await expect(reviewer).toHaveTitle(`${name} · Product Reviews • Portfolio Demo`);
     await reviewer.goBack();
     await expect(reviewer).toHaveTitle("Products");
     await reviewer.goForward();
-    await expect(reviewer).toHaveTitle(`${name} · Product Reviews`);
+    await expect(reviewer).toHaveTitle(`${name} · Product Reviews • Portfolio Demo`);
   });
 
   await test.step("the edit page, with special characters intact", async () => {
@@ -35,9 +35,9 @@ test("a product's pages are titled with its name", async ({ signUp, allowErrors 
     const iri: string = (await created.json()).id;
     const id = iri.replace(/.*\//, "");
     await owner.goto(`/products/${id}/edit`);
-    await expect(owner).toHaveTitle("Edit Title & Co's · Product Reviews");
+    await expect(owner).toHaveTitle("Edit Title & Co's · Product Reviews • Portfolio Demo");
     await owner.goto(`/products/${id}`);
-    await expect(owner).toHaveTitle("Title & Co's · Product Reviews");
+    await expect(owner).toHaveTitle("Title & Co's · Product Reviews • Portfolio Demo");
     // Away from its page first, which would otherwise ask for what is gone.
     await owner.goto("/my-products");
     const etag = (await owner.request.get(iri)).headers().etag;
@@ -47,6 +47,6 @@ test("a product's pages are titled with its name", async ({ signUp, allowErrors 
   await test.step("an unknown product falls back to a generic title", async () => {
     allowErrors({ status: 404, url: /^\/api\/storage\/products\/999999$/ });
     await reviewer.goto("/products/999999");
-    await expect(reviewer).toHaveTitle("Product · Product Reviews");
+    await expect(reviewer).toHaveTitle("Product · Product Reviews • Portfolio Demo");
   });
 });

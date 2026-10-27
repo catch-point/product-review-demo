@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 
 const STORAGE_KEY = "demo-highlights-dismissed";
@@ -12,8 +12,23 @@ const highlights = [
   { title: "JSON-LD/Hydra API", text: "Schema.org terms with Hydra collections, paging, and search templates." },
 ];
 
-function getInitialDismissed() {
-  if (typeof window === "undefined") return true;
+/** Re-renders the banners when one is dismissed (here or in another tab). */
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+/** Dismissed in this tab, for when localStorage cannot keep it. */
+let dismissedHere = false;
+
+function isDismissed() {
+  if (dismissedHere) return true;
   try {
     return localStorage.getItem(STORAGE_KEY) === "true";
   } catch {
@@ -21,16 +36,21 @@ function getInitialDismissed() {
   }
 }
 
+/**
+ * Hidden on the server and while hydrating, which must render the same HTML
+ * (the server cannot read localStorage), then shown unless dismissed.
+ */
 export function DemoHighlights() {
-  const [dismissed, setDismissed] = useState(getInitialDismissed);
+  const dismissed = useSyncExternalStore(subscribe, isDismissed, () => true);
 
   const dismiss = () => {
+    dismissedHere = true;
     try {
       localStorage.setItem(STORAGE_KEY, "true");
     } catch {
       // ignore
     }
-    setDismissed(true);
+    listeners.forEach((listener) => listener());
   };
 
   if (dismissed) return null;

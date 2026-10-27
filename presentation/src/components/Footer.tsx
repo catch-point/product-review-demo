@@ -14,7 +14,7 @@ export function Footer() {
             About &amp; Highlights
           </Link>
           <a
-            href="https://github.com/anomalyco/opencode"
+            href="https://github.com/catch-point/product-review-demo"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white"
