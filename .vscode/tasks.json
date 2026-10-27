@@ -11,6 +11,13 @@
   "presentation": { "panel": "dedicated", "clear": true },
   "problemMatcher": [],
   "tasks": [
+    {
+      "label": "Secrets: Generate",
+      "detail": "Make .env (git-ignored) with any secrets it lacks; every stack task does this too",
+      "type": "shell",
+      "command": "scripts/secrets.sh"
+    },
+
     // --- Identity: Keycloak, its database and Mailpit ----------------------
     {
       "label": "Identity: Start",
@@ -37,7 +44,7 @@
     },
     {
       "label": "Identity: Logs",
-      "detail": "Follow the Keycloak logs (stop with the trash icon)",
+      "detail": "Follow the logs of Keycloak, its database and Mailpit (stop with the trash icon)",
       "type": "shell",
       "command": "scripts/stack.sh identity logs"
     },
@@ -104,7 +111,7 @@
     },
     {
       "label": "Storage: Seed product catalog",
-      "detail": "Populate the product catalog, its owner, reviewers, reviews, comments and photos",
+      "detail": "Populate the product catalog, its owner, reviewers, reviews, comments and photos (needs DEV_TOKENS=true in .env, then Storage: Start)",
       "type": "shell",
       "command": "storage/scripts/seed-products.sh"
     },
@@ -138,6 +145,14 @@
       "type": "shell",
       "command": "if [ '${input:confirmDelete}' = 'Delete the data' ]; then scripts/stack.sh storage reset --yes; else echo 'Cancelled: nothing was deleted.'; fi"
     },
+    {
+      "label": "Storage: Test",
+      "detail": "Unit, web-slice and Testcontainers integration tests, with JaCoCo's coverage floor (target/site/jacoco/index.html)",
+      "type": "shell",
+      "command": "./mvnw -B verify",
+      "options": { "cwd": "${workspaceFolder}/storage" },
+      "group": "test"
+    },
 
     // --- Presentation: the web application (no data) -----------------------
     {
@@ -168,6 +183,41 @@
       "type": "shell",
       "command": "scripts/stack.sh presentation logs"
     },
+    {
+      "label": "Presentation: Test",
+      "detail": "Lint, typecheck and the Vitest unit tests",
+      "type": "shell",
+      "command": "npm run lint && npm run typecheck && npm test",
+      "options": { "cwd": "${workspaceFolder}/presentation" },
+      "group": "test"
+    },
+    {
+      "label": "Presentation: Browser tests",
+      "detail": "Playwright against the running, seeded stack (npx playwright install chromium first)",
+      "type": "shell",
+      "command": "npm run e2e",
+      "options": { "cwd": "${workspaceFolder}/presentation" },
+      "group": "test"
+    },
+
+    // --- Edge: nginx, the way in (:3000 and :8180) --------------------------
+    {
+      "label": "Edge: Start",
+      "detail": "Start the edge on :3000 (the application) and :8180 (Keycloak)",
+      "type": "shell",
+      "command": "scripts/stack.sh edge up"
+    },
+    {
+      "label": "Edge: Restart",
+      "type": "shell",
+      "command": "scripts/stack.sh edge restart"
+    },
+    {
+      "label": "Edge: Logs",
+      "detail": "Follow the edge's logs (stop with the trash icon)",
+      "type": "shell",
+      "command": "scripts/stack.sh edge logs"
+    },
 
     // --- All projects ------------------------------------------------------
     {
@@ -180,6 +230,17 @@
       "label": "All: Stop (keep data)",
       "type": "shell",
       "command": "scripts/stack.sh all stop"
+    },
+    {
+      "label": "All: Restart",
+      "type": "shell",
+      "command": "scripts/stack.sh all restart"
+    },
+    {
+      "label": "All: Logs",
+      "detail": "Follow every container's logs (stop with the trash icon)",
+      "type": "shell",
+      "command": "scripts/stack.sh all logs"
     },
     {
       "label": "All: Status",

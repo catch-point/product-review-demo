@@ -3,7 +3,8 @@
     "vscjava.vscode-java-pack",
     "ms-azuretools.vscode-docker",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "vitest.explorer",
+    "ms-playwright.playwright"
   ]
 }

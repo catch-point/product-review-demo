@@ -1,10 +1,16 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
-    // Docker context for the tasks in tasks.json. "default" is the system daemon
-    // (/var/run/docker.sock); set "" to use the current context.
-    "reviews.dockerContext": "default",
-    // The storage project targets Java 25 (storage/pom.xml). The Java
-    // extension and ./mvnw use the JDK 25 that JAVA_HOME (or else PATH) names;
-    // no path to one is kept here, as it differs from machine to machine.
-    "java.configuration.updateBuildConfiguration": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  // Docker context for the tasks in tasks.json and the Testcontainers launch.
+  // "" is the current context (docker context use …); name one, such as
+  // "default" (the system daemon, /var/run/docker.sock), in your user
+  // settings to pin it.
+  "reviews.dockerContext": "",
+  // The storage project targets Java 25 (storage/pom.xml). The Java
+  // extension and ./mvnw use the JDK 25 that JAVA_HOME (or else PATH) names;
+  // no path to one is kept here, as it differs from machine to machine.
+  "java.configuration.updateBuildConfiguration": "automatic",
+  // The web application's ESLint config and TypeScript are in presentation/,
+  // not at the repository root this workspace opens.
+  "eslint.workingDirectories": ["presentation"],
+  "typescript.tsdk": "presentation/node_modules/typescript/lib"
 }

@@ -467,14 +467,23 @@ the project, and `BIND_ADDRESS` the interface the published ports bind to.
 Open the repository root.
 
 - **Tasks** start, stop, restart and follow the logs of each project, back
-  up, restore and reset the data, and seed the sample product catalog.
+  up, restore and reset the data, seed the sample product catalog, and run
+  each project's tests. The Docker context they use is the
+  `reviews.dockerContext` setting (empty: the current context).
+- **Presentation: Stop** frees `:3000` for `npm run dev` by moving the edge
+  to `:3100`. While it is there, the application at `localhost:3100` is not
+  `PUBLIC_URL`, so its sign-in returns to `:3000` and its changes are
+  refused (403); **Presentation: Start** puts the edge back on `:3000`.
 - **Run and Debug** has two configurations for the storage service:
-  *Storage: Debug (Docker services)* runs it on `:8081` against Keycloak,
-  the storage database and MinIO in Docker, and *Storage: Debug
-  (Testcontainers)* runs it on `:8082` against a throwaway PostgreSQL and
-  MinIO it starts itself. Both read the
-  repository's `.env`, so the passwords and the development token settings
-  are the same as the stack's.
+  *Storage: Debug (Docker services)* runs it on `:8081` (actuator `:9081`)
+  against Keycloak, the storage database and MinIO in Docker, and *Storage:
+  Debug (Testcontainers)* runs it on `:8082` (actuator `:9082`) against a
+  throwaway PostgreSQL and MinIO it starts itself, accepting development
+  tokens only. Both read the repository's `.env`, so the passwords and the
+  development token secret are the same as the stack's: seed the throwaway
+  one with `BASE=http://localhost:8082 storage/scripts/seed-products.sh`.
+- **ESLint and TypeScript** use `presentation/`'s configuration and
+  TypeScript (`.vscode/settings.json`).
 - The storage project targets Java 25. The Java extension and `./mvnw` use
   the JDK that `JAVA_HOME` names, or else the `java` on `PATH`: make that a
   JDK 25 (the repository names no path to one, as it differs between
