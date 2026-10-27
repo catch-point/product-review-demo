@@ -522,7 +522,9 @@ Docker with Compose v2, bash, openssl, curl, jq, python3, Node 22 and
 Chromium's libraries (`npx playwright install-deps chromium`, once, as
 root). Runs take turns (`resource_group`), as the stack's ports and subnet
 are fixed. No CI variables are needed: each run generates its own secrets
-and deletes its stack at the end.
+and deletes its stack at the end. Until such a runner has taken the job
+once, `e2e` is manual (`when: manual`), so a missing runner does not hold up
+the pipeline; remove that line once it has.
 
 ### Other things worth knowing
 
