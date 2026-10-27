@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-noto-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* The sample pages are light only. */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #fff;
+  color: var(--color-gray-900);
+}
+
+/*
+ * Material Symbols' icons (layout.tsx), as Google's own stylesheet for the
+ * font sets them out: a ligature names each one ("star_rate"). They sit on
+ * the text baseline, as in the sample pages.
+ */
+.material-symbols-outlined {
+  font-family: var(--font-material-symbols);
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}

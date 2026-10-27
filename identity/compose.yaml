@@ -1,0 +1,112 @@
+# Keycloak (accounts, sign-in and roles) on its own PostgreSQL database, and
+# Mailpit to catch Keycloak's email. Secrets come from .env: run
+# scripts/secrets.sh at the repository root once first.
+#
+#   docker compose up -d                       # Keycloak, Mailpit on :8025
+#
+# Keycloak is published through the edge (edge/compose.yaml) on :8180.
+
+services:
+  # Keycloak: accounts, passwords and sign-in for the "reviews" realm
+  # (realm/reviews-realm.json, imported when the realm does not exist).
+  keycloak-db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?run scripts/secrets.sh}
+    volumes:
+      - keycloak-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U keycloak -d keycloak"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      # A new volume is initialised first (initdb), which on a busy machine,
+      # such as CI building every image at once, outlasts the retries.
+      start_period: 3m
+      start_interval: 1s
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.4
+    # Development mode: HTTP, and themes reread on every request. Production
+    # runs `start --optimized` from a built image, behind TLS.
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?run scripts/secrets.sh}
+      # The URL browsers use, and so the tokens' issuer. Other containers reach
+      # Keycloak as http://keycloak:8080 for keys and tokens (back channel).
+      KC_HOSTNAME: ${KEYCLOAK_URL:-http://localhost:8180}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+      # The presentation server's calls (code exchange, refresh, sign-out) name
+      # the person's address in X-Forwarded-For, so Keycloak's events and
+      # sessions show it; the header is believed from that server alone.
+      # The edge's requests (browsers') name theirs too.
+      KC_PROXY_HEADERS: xforwarded
+      KC_PROXY_TRUSTED_ADDRESSES: ${PRESENTATION_ADDRESS:-172.31.250.10},${EDGE_ADDRESS:-172.31.250.11}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?run scripts/secrets.sh}
+      # Placeholders in reviews-realm.json.
+      KC_PRESENTATION_URL: ${PRESENTATION_URL:-http://localhost:3000}
+      KC_PRESENTATION_CLIENT_SECRET: ${PRESENTATION_CLIENT_SECRET:?run scripts/secrets.sh}
+      KC_REVIEWS_SMTP_HOST: ${SMTP_HOST:-mailpit}
+      KC_REVIEWS_SMTP_PORT: ${SMTP_PORT:-1025}
+    volumes:
+      - ./realm:/opt/keycloak/data/import:ro
+      - ./themes/reviews:/opt/keycloak/themes/reviews:ro
+    # Not published: browsers reach it through the edge, on :8180.
+    networks: [default, backchannel]
+    healthcheck:
+      # The image has no curl: ask the management port with bash's /dev/tcp.
+      test:
+        - CMD-SHELL
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '"UP"' <&3
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 20s
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Applies what the realm import cannot (configure.sh), then exits.
+  keycloak-config:
+    image: quay.io/keycloak/keycloak:26.6.4
+    entrypoint: ["bash", "/opt/keycloak/configure.sh"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?run scripts/secrets.sh}
+      # Registered accounts to make site administrators (comma-separated).
+      REVIEWS_ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+    volumes:
+      - ./configure.sh:/opt/keycloak/configure.sh:ro
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    restart: "no"
+
+  # Catches the email Keycloak sends in development (address verification,
+  # password reset): read it at http://localhost:8025.
+  mailpit:
+    image: axllent/mailpit:v1.31.6
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${MAILPIT_HTTP_PORT:-8025}:8025"
+    restart: unless-stopped
+
+volumes:
+  keycloak-db:
+
+networks:
+  # Where the presentation server reaches Keycloak (presentation/compose.yaml).
+  backchannel:
+    ipam:
+      config:
+        - subnet: ${BACKCHANNEL_SUBNET:-172.31.250.0/28}

@@ -1,0 +1,144 @@
+{
+  "realm": "reviews",
+  "displayName": "Product Reviews",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "verifyEmail": true,
+  "resetPasswordAllowed": true,
+  "rememberMe": false,
+  "bruteForceProtected": true,
+  "failureFactor": 10,
+  "passwordPolicy": "length(8) and maxLength(200) and notUsername and notEmail",
+  "loginTheme": "reviews",
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 28800,
+  "ssoSessionMaxLifespan": 36000,
+  "smtpServer": {
+    "host": "${KC_REVIEWS_SMTP_HOST:mailpit}",
+    "port": "${KC_REVIEWS_SMTP_PORT:1025}",
+    "from": "${KC_REVIEWS_SMTP_FROM:no-reply@product-reviews.example}",
+    "fromDisplayName": "Product Reviews"
+  },
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Site administrator (no extra permissions yet)"
+      },
+      {
+        "name": "offline_access",
+        "description": "${role_offline-access}"
+      },
+      {
+        "name": "uma_authorization",
+        "description": "${role_uma_authorization}"
+      },
+      {
+        "name": "default-roles-reviews",
+        "description": "${role_default-roles}",
+        "composite": true,
+        "composites": {
+          "realm": [
+            "offline_access",
+            "uma_authorization"
+          ],
+          "client": {
+            "account": [
+              "view-profile"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "defaultRole": {
+    "name": "default-roles-reviews"
+  },
+  "clients": [
+    {
+      "clientId": "presentation",
+      "name": "Product Reviews web application",
+      "description": "presentation/: signs people in with the authorization code flow and PKCE",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${KC_PRESENTATION_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "frontchannelLogout": false,
+      "rootUrl": "${KC_PRESENTATION_URL:http://localhost:3000}",
+      "baseUrl": "/",
+      "redirectUris": [
+        "/api/auth/callback"
+      ],
+      "webOrigins": [],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "/login",
+        "client.use.lightweight.access.token.enabled": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "role",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "role",
+            "claim.name": "role",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "claim.name": "roles",
+            "multivalued": "true",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "storage audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "storage",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"role\",\"displayName\":\"${reviewsRole}\",\"validations\":{\"options\":{\"options\":[\"reviewer\",\"owner\"]}},\"annotations\":{\"inputType\":\"select-radiobuttons\",\"inputOptionLabels\":{\"reviewer\":\"${reviewsRoleReviewer}\",\"owner\":\"${reviewsRoleOwner}\"}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"firstName\",\"displayName\":\"${reviewsName}\",\"validations\":{\"length\":{\"min\":1,\"max\":200},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":254}},\"required\":{\"roles\":[\"user\"]},\"annotations\":{\"inputType\":\"html5-email\"},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false}],\"groups\":[]}"
+          ]
+        }
+      }
+    ]
+  }
+}

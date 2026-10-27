@@ -1,0 +1,11 @@
+# The product listing and each product's page are for everyone. They
+# render in the browser from /api/storage, so crawlers must be able to fetch
+# it too, images included.
+User-agent: *
+Allow: /api/storage/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /my-products
+Disallow: /products/new
+Disallow: /products/*/edit

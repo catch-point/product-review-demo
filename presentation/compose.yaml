@@ -1,0 +1,46 @@
+# The web application, against the identity project's Keycloak and the
+# storage service; browsers reach it through the edge (edge/), on :3000. Run
+# it with them from the repository root:
+#   scripts/secrets.sh && docker compose up -d --build
+#
+# It runs the production build with the secrets from .env (scripts/secrets.sh).
+
+services:
+  presentation:
+    build:
+      context: .
+    environment:
+      STORAGE_URL: http://storage:8080
+      # Where browsers reach it, through the edge: the origin it names itself
+      # by (sign-in redirects, the storage service's IRIs), never the Host a
+      # request claims, so the edge's shared cache keeps nothing aimed elsewhere.
+      PUBLIC_URL: ${PRESENTATION_URL:-http://localhost:3000}
+      # Browsers sign in at the public URL, which is also the tokens' issuer;
+      # this server reaches Keycloak on the Compose network.
+      KEYCLOAK_ISSUER: ${KEYCLOAK_URL:-http://localhost:8180}/realms/reviews
+      KEYCLOAK_INTERNAL_URL: ${KEYCLOAK_INTERNAL_URL:-http://keycloak:8080}
+      KEYCLOAK_CLIENT_SECRET: ${PRESENTATION_CLIENT_SECRET:?run scripts/secrets.sh}
+      SESSION_SECRET: ${SESSION_SECRET:?run scripts/secrets.sh}
+      ALLOW_DEV_SECRETS: ${ALLOW_DEV_SECRETS:-false}
+      # The reverse proxy in front, whose X-Forwarded-For names the client
+      # (client-address.cjs): the edge (edge/compose.yaml).
+      TRUSTED_PROXIES: ${EDGE_ADDRESS:-172.31.250.11}
+    # Not published: browsers reach it through the edge, on :3000. Only on
+    # this network, at this fixed address, so the storage service and
+    # Keycloak can trust the X-Forwarded-For that this server sends them.
+    networks:
+      backchannel:
+        ipv4_address: ${PRESENTATION_ADDRESS:-172.31.250.10}
+    depends_on:
+      storage:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  # Declared alike in each project's compose.yaml that joins it.
+  backchannel:
+    ipam:
+      config:
+        - subnet: ${BACKCHANNEL_SUBNET:-172.31.250.0/28}

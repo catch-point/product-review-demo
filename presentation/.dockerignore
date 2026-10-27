@@ -1,0 +1,14 @@
+# Send only the sources; the image installs and builds its own.
+node_modules
+.next
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+coverage
+Dockerfile
+.dockerignore
+e2e
+playwright.config.ts
+test-results
+playwright-report
