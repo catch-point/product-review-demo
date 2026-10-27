@@ -1,0 +1,46 @@
+# The edge: nginx in front of the web application (:3000) and Keycloak
+# (:8180), the only ports they are reached on from outside. It limits each
+# client address and caches what does not change (default.conf.template).
+# Run it with the others from the repository root:
+#   docker compose up -d --build
+
+services:
+  edge:
+    image: nginx:1.28-alpine
+    environment:
+      # The image writes Docker's resolver into NGINX_LOCAL_RESOLVERS, so the
+      # services behind are looked up as they start, not before.
+      NGINX_ENTRYPOINT_LOCAL_RESOLVERS: "1"
+      # Per client address: a steady rate, and a burst above it served at once.
+      EDGE_READ_RATE: ${EDGE_READ_RATE:-100r/s}
+      EDGE_READ_BURST: ${EDGE_READ_BURST:-150}
+      EDGE_WRITE_RATE: ${EDGE_WRITE_RATE:-10r/s}
+      EDGE_WRITE_BURST: ${EDGE_WRITE_BURST:-60}
+      EDGE_SIGNIN_RATE: ${EDGE_SIGNIN_RATE:-5r/s}
+      EDGE_SIGNIN_BURST: ${EDGE_SIGNIN_BURST:-60}
+      EDGE_CONNECTIONS: ${EDGE_CONNECTIONS:-50}
+      # How long anonymous API reads are kept.
+      EDGE_MICROCACHE: ${EDGE_MICROCACHE:-2s}
+    volumes:
+      - ./default.conf.template:/etc/nginx/templates/default.conf.template:ro
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${PRESENTATION_HTTP_PORT:-3000}:3000"
+      - "${BIND_ADDRESS:-127.0.0.1}:${KEYCLOAK_HTTP_PORT:-8180}:8180"
+    # At this fixed address, the one from which the presentation server and
+    # Keycloak believe X-Forwarded-For.
+    networks:
+      backchannel:
+        ipv4_address: ${EDGE_ADDRESS:-172.31.250.11}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/.edge/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+networks:
+  # Declared alike in each project's compose.yaml that joins it.
+  backchannel:
+    ipam:
+      config:
+        - subnet: ${BACKCHANNEL_SUBNET:-172.31.250.0/28}

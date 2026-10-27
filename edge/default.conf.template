@@ -1,0 +1,183 @@
+# The edge: the one way in from outside, to the web application (:3000) and
+# Keycloak (:8180). It limits each client address (the connection's: nothing
+# in front of the edge is trusted), caches what does not change, and names
+# the client to what is behind it in X-Forwarded-For, which the presentation
+# server and Keycloak believe from the edge's address alone.
+#
+# The official image fills in ${...} from the environment (compose.yaml) when
+# it starts; nginx's own $variables are left as they are.
+
+resolver ${NGINX_LOCAL_RESOLVERS} valid=10s ipv6=off;
+
+# --- limits, per client address ---------------------------------------------
+
+# Everything: pages, API reads, Keycloak's pages.
+limit_req_zone $binary_remote_addr zone=reads:10m rate=${EDGE_READ_RATE};
+# Writes too (an empty key is not counted, so reads are not).
+map $request_method $write_client {
+  GET     "";
+  HEAD    "";
+  OPTIONS "";
+  default $binary_remote_addr;
+}
+limit_req_zone $write_client zone=writes:10m rate=${EDGE_WRITE_RATE};
+# Signing in, registering and resetting passwords: Keycloak's form posts.
+map $request_method $signin_client {
+  POST    $binary_remote_addr;
+  default "";
+}
+limit_req_zone $signin_client zone=signin:10m rate=${EDGE_SIGNIN_RATE};
+limit_conn_zone $binary_remote_addr zone=connections:10m;
+limit_req_status 429;
+limit_conn_status 429;
+
+# Slow clients are cut off rather than held open.
+client_header_timeout 10s;
+client_body_timeout 10s;
+send_timeout 30s;
+# The largest body behind the edge: an image upload (5 MB with its encoding).
+client_max_body_size 6m;
+server_tokens off;
+
+# --- caching -----------------------------------------------------------------
+
+# In the container only: an empty cache after a restart costs a few misses.
+proxy_cache_path /var/cache/nginx/edge keys_zone=edge:20m max_size=1g inactive=7d use_temp_path=off;
+
+# A response the application marks as one caller's (private) or never to be
+# kept (no-store) is never kept here, though /api/storage/ otherwise ignores
+# Cache-Control: storage marks what is the same for everyone no-cache
+# (web.HttpCaching), so no-store means it said nothing, or that it is
+# personal, and private that it is. Read only in proxy_no_cache, once the
+# response is in: a map is worked out once a request.
+map $upstream_http_cache_control $personal_response {
+  default             "";
+  ~*(private|no-store) 1;
+}
+
+# --- what the services behind are told ---------------------------------------
+
+proxy_http_version 1.1;
+proxy_set_header Connection "";
+proxy_set_header Host $http_host;
+# The client, replacing whatever the client sent: only the edge's word counts.
+proxy_set_header X-Forwarded-For $remote_addr;
+proxy_set_header X-Forwarded-Proto $scheme;
+# Nor may a client say which host, port or prefix the services are at: what
+# they build from those could be cached here for everyone. (An empty value
+# leaves the header out.)
+proxy_set_header X-Forwarded-Host "";
+proxy_set_header X-Forwarded-Port "";
+proxy_set_header X-Forwarded-Prefix "";
+proxy_set_header Forwarded "";
+# Keycloak's responses carry large cookies.
+proxy_buffer_size 16k;
+proxy_buffers 8 16k;
+
+server {
+  listen 3000;
+  limit_conn connections ${EDGE_CONNECTIONS};
+  error_page 429 = @too_many_requests;
+  # Resolved per request (resolver above), so the edge starts without them.
+  set $presentation http://presentation:3000;
+
+  location = /.edge/health {
+    access_log off;
+    return 204;
+  }
+
+  # Uploaded images are named by their content and never change: cached for
+  # everyone, for as long as they say (a year), signed in or not. (A regex,
+  # so uploads, to /api/storage/images, are not redirected to a trailing slash.)
+  location ~ ^/api/storage/images/[^/]+$ {
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    limit_req zone=writes burst=${EDGE_WRITE_BURST} nodelay;
+    proxy_cache edge;
+    proxy_cache_lock on;
+    # Their Vary (Next.js's router headers, storage's CORS ones) is too long
+    # for nginx to cache by, and the bytes are the same whatever they say.
+    proxy_ignore_headers Vary;
+    # Never one that sets a cookie (a renewed session, say), whatever a later
+    # proxy_ignore_headers says: nginx keeps none by default, and this says so.
+    # Not bypassed for signed-in visitors, as the API is: an image is the same
+    # for everyone.
+    proxy_no_cache $upstream_http_set_cookie;
+    add_header X-Cache-Status $upstream_cache_status always;
+    proxy_pass $presentation;
+  }
+
+  # The application's build files, named by their content too.
+  location /_next/static/ {
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    proxy_cache edge;
+    proxy_cache_lock on;
+    # Their Vary (Next.js's router headers, storage's CORS ones) is too long
+    # for nginx to cache by, and the bytes are the same whatever they say.
+    proxy_ignore_headers Vary;
+    add_header X-Cache-Status $upstream_cache_status always;
+    proxy_pass $presentation;
+  }
+
+  # The storage service. Reads by people not signed in are the same for
+  # everyone: kept for ${EDGE_MICROCACHE}, so a flood of them reaches storage once a
+  # moment. Storage asks for revalidation (no-cache); the edge answers that
+  # briefly itself. Signed-in requests (the session cookie) always go through,
+  # and what is marked private or no-store is never kept ($personal_response).
+  location /api/storage/ {
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    limit_req zone=writes burst=${EDGE_WRITE_BURST} nodelay;
+    proxy_cache edge;
+    proxy_cache_methods GET HEAD;
+    # Vary is too long to cache by (see above); what the response depends
+    # on, besides the session left out below, is Accept (JSON-LD or JSON).
+    proxy_ignore_headers Cache-Control Expires Vary;
+    proxy_cache_key "$scheme$proxy_host$request_uri $http_accept";
+    proxy_cache_valid 200 ${EDGE_MICROCACHE};
+    proxy_cache_lock on;
+    proxy_cache_use_stale updating;
+    proxy_no_cache $cookie_session $http_authorization $personal_response;
+    proxy_cache_bypass $cookie_session $http_authorization;
+    add_header X-Cache-Status $upstream_cache_status always;
+    proxy_pass $presentation;
+  }
+
+  location / {
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    limit_req zone=writes burst=${EDGE_WRITE_BURST} nodelay;
+    proxy_pass $presentation;
+  }
+
+  location @too_many_requests {
+    default_type application/problem+json;
+    add_header Retry-After 5 always;
+    return 429 '{"type":"about:blank","title":"Too Many Requests","status":429,"detail":"Too many requests from your address: wait a moment and try again"}';
+  }
+}
+
+server {
+  listen 8180;
+  limit_conn connections ${EDGE_CONNECTIONS};
+  error_page 429 = @too_many_requests;
+  set $keycloak http://keycloak:8080;
+
+  # Sign-in, registration and password-reset forms (login-actions), and the
+  # endpoints that start them. Keycloak locks an account after repeated
+  # failures; this limits each address, whichever accounts it tries.
+  location ~ ^/realms/[^/]+/(login-actions/|protocol/openid-connect/(auth|token|registrations)) {
+    limit_req zone=signin burst=${EDGE_SIGNIN_BURST} nodelay;
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    proxy_pass $keycloak;
+  }
+
+  location / {
+    limit_req zone=reads burst=${EDGE_READ_BURST} nodelay;
+    limit_req zone=writes burst=${EDGE_WRITE_BURST} nodelay;
+    proxy_pass $keycloak;
+  }
+
+  location @too_many_requests {
+    default_type application/problem+json;
+    add_header Retry-After 5 always;
+    return 429 '{"type":"about:blank","title":"Too Many Requests","status":429,"detail":"Too many requests from your address: wait a moment and try again"}';
+  }
+}
