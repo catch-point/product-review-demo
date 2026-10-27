@@ -20,6 +20,6 @@ This project showcases several intentional design decisions:
 - **Least Privilege**: App role cannot migrate, cannot skip journal, cannot bypass RLS/superuser-like capabilities.
 
 ## Testing
-- **Unit**: Vitest for presentation utilities/components.
+- **Unit**: Vitest for the presentation server (session, auth routes, storage proxy, access rules) and its utilities.
 - **Integration**: Spring Boot tests with Testcontainers for storage.
 - **E2E**: Playwright journeys covering registration, ownership, reviews, replies, and discontinued flows.

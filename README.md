@@ -288,7 +288,8 @@ presentation server exchanges for the tokens.
     stranger learns nothing from a precondition failure and an owner cannot
     slip a change in between.
   - Writes need `If-Match` (428 without it, 412 when the row changed).
-    Deleting a product that still has reviews is refused.
+    Deleting a product discontinues it: it leaves the listings, and its
+    reviews and replies stay ([ADR 0003](docs/adr/0003-soft-delete-products-with-review-retention.md)).
   - The API never shows a person's email address to anyone else.
 - **Input:**
   - **Body size:** at most 64 KB of JSON, or 5 MB (plus its encoding) for an
