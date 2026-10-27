@@ -1,0 +1,234 @@
+{
+  // Docker tasks for the identity (Keycloak), storage and presentation projects.
+  // Run them with "Tasks: Run Task". They call scripts/stack.sh, which manages
+  // the Compose project in compose.yaml one project at a time.
+  // The Docker context comes from the "reviews.dockerContext" setting.
+  "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceFolder}",
+    "env": { "DOCKER_CONTEXT": "${config:reviews.dockerContext}" }
+  },
+  "presentation": { "panel": "dedicated", "clear": true },
+  "problemMatcher": [],
+  "tasks": [
+    // --- Identity: Keycloak, its database and Mailpit ----------------------
+    {
+      "label": "Identity: Start",
+      "detail": "Start Keycloak (and its database) and Mailpit, waiting until healthy",
+      "type": "shell",
+      "command": "scripts/stack.sh identity up"
+    },
+    {
+      "label": "Identity: Stop (keep data)",
+      "detail": "Stop and remove the Keycloak and Mailpit containers; the database volume is kept",
+      "type": "shell",
+      "command": "scripts/stack.sh identity stop"
+    },
+    {
+      "label": "Identity: Restart",
+      "type": "shell",
+      "command": "scripts/stack.sh identity restart"
+    },
+    {
+      "label": "Identity: Status",
+      "detail": "Containers and data volumes",
+      "type": "shell",
+      "command": "scripts/stack.sh identity status"
+    },
+    {
+      "label": "Identity: Logs",
+      "detail": "Follow the Keycloak logs (stop with the trash icon)",
+      "type": "shell",
+      "command": "scripts/stack.sh identity logs"
+    },
+    {
+      "label": "Identity: Make administrator…",
+      "detail": "Give a registered account Keycloak's admin realm role (no extra permissions yet)",
+      "type": "shell",
+      "command": "scripts/stack.sh identity admin '${input:adminEmail}'"
+    },
+    {
+      "label": "Identity: Back up data",
+      "detail": "Dump the Keycloak database into backups/identity-<timestamp>",
+      "type": "shell",
+      "command": "scripts/stack.sh identity backup"
+    },
+    {
+      "label": "Identity: Restore data…",
+      "detail": "Replace the Keycloak database with a backup",
+      "type": "shell",
+      "command": "scripts/stack.sh identity restore '${input:backupDirectory}'"
+    },
+    {
+      "label": "Identity: Reset (delete all data)…",
+      "detail": "Delete the Keycloak containers and database (asks first)",
+      "type": "shell",
+      "command": "if [ '${input:confirmDelete}' = 'Delete the data' ]; then scripts/stack.sh identity reset --yes; else echo 'Cancelled: nothing was deleted.'; fi"
+    },
+
+    // --- Storage: the service, its database and images ---------------------
+    {
+      "label": "Storage: Start",
+      "detail": "Build and start the storage service, waiting until healthy",
+      "type": "shell",
+      "command": "scripts/stack.sh storage up"
+    },
+    {
+      "label": "Storage: Start dependencies",
+      "detail": "Start Keycloak, the storage database and MinIO (images) for running the service in VS Code",
+      "type": "shell",
+      "command": "scripts/stack.sh storage deps"
+    },
+    {
+      "label": "Storage: Stop (keep data)",
+      "detail": "Stop and remove the storage containers; the database and images are kept",
+      "type": "shell",
+      "command": "scripts/stack.sh storage stop"
+    },
+    {
+      "label": "Storage: Restart",
+      "type": "shell",
+      "command": "scripts/stack.sh storage restart"
+    },
+    {
+      "label": "Storage: Status",
+      "detail": "Containers and data volumes",
+      "type": "shell",
+      "command": "scripts/stack.sh storage status"
+    },
+    {
+      "label": "Storage: Logs",
+      "detail": "Follow the storage logs (stop with the trash icon)",
+      "type": "shell",
+      "command": "scripts/stack.sh storage logs"
+    },
+    {
+      "label": "Storage: Seed product catalog",
+      "detail": "Populate the product catalog, its owner, reviewers, reviews, comments and photos",
+      "type": "shell",
+      "command": "storage/scripts/seed-products.sh"
+    },
+    {
+      "label": "Storage: Back up data",
+      "detail": "Dump the database and copy the images bucket into backups/storage-<timestamp>",
+      "type": "shell",
+      "command": "scripts/stack.sh storage backup"
+    },
+    {
+      "label": "Storage: Restore data…",
+      "detail": "Replace the database and images with a backup",
+      "type": "shell",
+      "command": "scripts/stack.sh storage restore '${input:backupDirectory}'"
+    },
+    {
+      "label": "Storage: List unused images",
+      "detail": "Images no product or review uses, last uploaded more than 7 days ago",
+      "type": "shell",
+      "command": "scripts/stack.sh storage prune-images"
+    },
+    {
+      "label": "Storage: Delete unused images…",
+      "detail": "Delete the images \"List unused images\" lists (asks first)",
+      "type": "shell",
+      "command": "if [ '${input:confirmPrune}' = 'Delete them' ]; then scripts/stack.sh storage prune-images --yes; else echo 'Cancelled: nothing was deleted.'; fi"
+    },
+    {
+      "label": "Storage: Reset (delete all data)…",
+      "detail": "Delete the storage containers, database and images (asks first)",
+      "type": "shell",
+      "command": "if [ '${input:confirmDelete}' = 'Delete the data' ]; then scripts/stack.sh storage reset --yes; else echo 'Cancelled: nothing was deleted.'; fi"
+    },
+
+    // --- Presentation: the web application (no data) -----------------------
+    {
+      "label": "Presentation: Start",
+      "detail": "Build and start the web application on :3000 (stop it before npm run dev)",
+      "type": "shell",
+      "command": "scripts/stack.sh presentation up"
+    },
+    {
+      "label": "Presentation: Stop",
+      "detail": "Stop and remove the web application's container, and move the edge to :3100, freeing :3000 for npm run dev",
+      "type": "shell",
+      "command": "scripts/stack.sh presentation stop && PRESENTATION_HTTP_PORT=3100 scripts/stack.sh edge up"
+    },
+    {
+      "label": "Presentation: Restart",
+      "type": "shell",
+      "command": "scripts/stack.sh presentation restart"
+    },
+    {
+      "label": "Presentation: Status",
+      "type": "shell",
+      "command": "scripts/stack.sh presentation status"
+    },
+    {
+      "label": "Presentation: Logs",
+      "detail": "Follow the web application's logs (stop with the trash icon)",
+      "type": "shell",
+      "command": "scripts/stack.sh presentation logs"
+    },
+
+    // --- All projects ------------------------------------------------------
+    {
+      "label": "All: Start",
+      "detail": "Build and start everything",
+      "type": "shell",
+      "command": "scripts/stack.sh all up"
+    },
+    {
+      "label": "All: Stop (keep data)",
+      "type": "shell",
+      "command": "scripts/stack.sh all stop"
+    },
+    {
+      "label": "All: Status",
+      "type": "shell",
+      "command": "scripts/stack.sh all status"
+    },
+    {
+      "label": "All: Back up data",
+      "detail": "Back up the identity and storage data into backups/all-<timestamp>",
+      "type": "shell",
+      "command": "scripts/stack.sh all backup"
+    },
+    {
+      "label": "All: Restore data…",
+      "type": "shell",
+      "command": "scripts/stack.sh all restore '${input:backupDirectory}'"
+    },
+    {
+      "label": "All: Reset (delete all data)…",
+      "detail": "Delete every container and volume (asks first)",
+      "type": "shell",
+      "command": "if [ '${input:confirmDelete}' = 'Delete the data' ]; then scripts/stack.sh all reset --yes; else echo 'Cancelled: nothing was deleted.'; fi"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "confirmDelete",
+      "type": "pickString",
+      "description": "This permanently deletes the data. Back it up first if you need it.",
+      "options": ["Keep the data", "Delete the data"],
+      "default": "Keep the data"
+    },
+    {
+      "id": "confirmPrune",
+      "type": "pickString",
+      "description": "This permanently deletes the images no product or review uses, last uploaded more than 7 days ago.",
+      "options": ["Keep them", "Delete them"],
+      "default": "Keep them"
+    },
+    {
+      "id": "adminEmail",
+      "type": "promptString",
+      "description": "Email of the registered account to make an administrator"
+    },
+    {
+      "id": "backupDirectory",
+      "type": "promptString",
+      "description": "Backup directory to restore (made by a \"Back up data\" task)",
+      "default": "backups/"
+    }
+  ]
+}

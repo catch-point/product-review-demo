@@ -1,0 +1,10 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    // Docker context for the tasks in tasks.json. "default" is the system daemon
+    // (/var/run/docker.sock); set "" to use the current context.
+    "reviews.dockerContext": "default",
+    // The storage project targets Java 25 (storage/pom.xml). The Java
+    // extension and ./mvnw use the JDK 25 that JAVA_HOME (or else PATH) names;
+    // no path to one is kept here, as it differs from machine to machine.
+    "java.configuration.updateBuildConfiguration": "automatic"
+}

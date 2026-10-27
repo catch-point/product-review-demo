@@ -1,0 +1,58 @@
+{
+  // Run the storage service under the debugger (needs the Extension Pack for Java).
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Uses the Docker services from tasks.json: Keycloak on :8180 and the
+      // storage database on :5433. It serves on :8081, so it can run next to the
+      // storage container (:8080) and share its data. Actuator is on :9081.
+      "name": "Storage: Debug (Docker services)",
+      "type": "java",
+      "request": "launch",
+      "projectName": "storage",
+      "mainClass": "ca.leighnet.reviews.storage.StorageApplication",
+      "cwd": "${workspaceFolder}/storage",
+      "preLaunchTask": "Storage: Start dependencies",
+      // The repository root's .env (scripts/secrets.sh), not VS Code's own
+      // environment: STORAGE_DB_SERVICE_PASSWORD and STORAGE_DB_OWNER_PASSWORD
+      // reach application.yml's datasource and Flyway placeholders,
+      // ACTUATOR_PASSWORD the actuator's account (curl -u actuator:… on
+      // :9081), and JWT_SECRET (via application.yml's jwt-secret alias) the development
+      // token secret, which is used only with DEV_TOKENS=true in .env.
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "SERVER_PORT": "8081",
+        "MANAGEMENT_SERVER_PORT": "9081",
+        "MANAGEMENT_SERVER_ADDRESS": "127.0.0.1",
+        // Connects to the storage database's published port, :5433, as
+        // reviews_service, and migrates the schema itself as its owner,
+        // reviews_owner, as storage-migrate does (application.yml's defaults).
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI": "http://localhost:8180/realms/reviews",
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI": "http://localhost:8180/realms/reviews/protocol/openid-connect/certs",
+        "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES": "storage"
+        // Images go to the stack's MinIO, published on :9100, as its own user
+        // (application.yml's defaults, MINIO_IMAGES_SECRET_KEY from .env).
+      }
+    },
+    {
+      // Starts throwaway PostgreSQL and MinIO containers with Testcontainers;
+      // no data is kept. It serves on :8082, with actuator on :9082.
+      "name": "Storage: Debug (Testcontainers)",
+      "type": "java",
+      "request": "launch",
+      "projectName": "storage",
+      "mainClass": "ca.leighnet.reviews.storage.TestStorageApplication",
+      "classPaths": ["$Test"],
+      "cwd": "${workspaceFolder}/storage",
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "SERVER_PORT": "8082",
+        "MANAGEMENT_SERVER_PORT": "9082",
+        "MANAGEMENT_SERVER_ADDRESS": "127.0.0.1",
+        // So Testcontainers starts the throwaway containers on the daemon the
+        // tasks use as well, whatever reviews.dockerContext selects.
+        "DOCKER_CONTEXT": "${config:reviews.dockerContext}"
+      }
+    }
+  ]
+}
