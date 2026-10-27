@@ -5,7 +5,7 @@ definitions are in `src/main/resources`, and its seed data is in `scripts/seed`:
 
 | File | How it is used |
 |---|---|
-| `db/schema.sql` | Applied by Flyway as migration `V1__Review`, exactly as written. Editing it after it has been applied fails validation, so put later changes in new migrations, like `db/migration/V2__journal_notify.sql` |
+| `db/schema.sql` | Applied by Flyway as migration `V1__Review`, exactly as written. Editing it after it has been applied fails validation, so put later changes in new migrations in `db/migration/`, like `V2__journal_guard_allows_journal_write.sql` |
 | `context.jsonld` | The JSON-LD context. It is served at `/context.jsonld`, and every request and response document uses it |
 | `openapi.yaml` | The OpenAPI document, served at `/openapi.yml`. A test checks that the controllers implement exactly its operations |
 | `scripts/seed/catalog.json` | The default seed data for `scripts/seed-products.sh`: 240 products across six categories, their owner, reviewers, reviews and replies |
@@ -130,7 +130,8 @@ The **Run and Debug** view has two launch configurations:
   `journal_write()` attributes every row change, and records the database
   role that made it. The journal is not exposed by the API. Only its owner
   can write it (through `journal_write()`) or skip it (`app.skip_journal`,
-  for a migration: `V7__journal_skip_by_owner_only.sql`).
+  for a migration), and no one can change or delete its entries
+  (`journal_guard()`).
 - **Database roles.** The superuser, `postgres` (`STORAGE_DB_PASSWORD`), only
   makes the schema's owner: `db/owner.sql`, run by the one-shot
   `storage-db-roles` container. That script creates `reviews_owner`, which
@@ -228,8 +229,8 @@ The **Run and Debug** view has two launch configurations:
   - **This instance's own writes:** at commit, the service reads the
     transaction's journal entries and drops what they affect, so the next
     request sees the change.
-  - **Everything else:** migration `V2__journal_notify.sql` sends a
-    PostgreSQL `NOTIFY` for every journal entry, and each instance
+  - **Everything else:** the journal's `journal_notify` trigger
+    (`db/schema.sql`) sends a PostgreSQL `NOTIFY` for every journal entry, and each instance
     `LISTEN`s and drops the same entries. This covers other instances and
     changes made outside the service, such as with `psql`, within about a
     second.

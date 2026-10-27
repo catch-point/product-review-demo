@@ -10,13 +10,11 @@ import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
 
 /**
- * Applies schema.sql verbatim. The script opens its own transaction (BEGIN)
- * but does not end it, so Flyway runs it outside one and this commits it
- * straight after: the schema is in place before Flyway records the migration,
- * rather than whenever the connection's open transaction happened to end. The
- * checksum is the script's, so editing an applied schema.sql fails validation
- * instead of being silently ignored; later changes belong in V2__... migrations
- * (and adding the missing COMMIT to the script would be such an edit).
+ * Applies schema.sql verbatim. The script is its own transaction (BEGIN ...
+ * COMMIT), so Flyway runs it outside one: the schema is committed before
+ * Flyway records the migration. The checksum is the script's, so editing an
+ * applied schema.sql fails validation instead of being silently ignored;
+ * later changes belong in db/migration/V2__... and onward.
  */
 public class V1__Review extends BaseJavaMigration {
 
@@ -38,7 +36,6 @@ public class V1__Review extends BaseJavaMigration {
 	public void migrate(Context context) throws Exception {
 		try (var statement = context.getConnection().createStatement()) {
 			statement.execute(script());
-			statement.execute("COMMIT");
 		}
 	}
 
