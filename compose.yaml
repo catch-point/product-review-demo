@@ -1,0 +1,16 @@
+# The whole application: Keycloak (identity/), the storage service
+# (storage/), each with its own PostgreSQL database, Mailpit for Keycloak's
+# email in development, and the web application (presentation/), reached
+# through the edge (edge/: nginx) on :3000 and Keycloak on :8180.
+#
+#   scripts/secrets.sh          once: generates .env (git-ignored secrets)
+#   docker compose up -d --build
+#   docker compose down            # add -v to delete the databases
+
+name: jamesleigh-review
+
+include:
+  - identity/compose.yaml
+  - storage/compose.yaml
+  - presentation/compose.yaml
+  - edge/compose.yaml
