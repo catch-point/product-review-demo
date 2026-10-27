@@ -12,7 +12,9 @@ export async function POST(request: NextRequest): Promise<Response> {
   }
   const tokens = await tokensOf(request);
   if (tokens) {
-    await endSession(tokens, clientAddressOf(request.headers));
+    // Signing out here must not depend on Keycloak answering: its session
+    // ends on its own (idle or too old) if it cannot be told now.
+    await endSession(tokens, clientAddressOf(request.headers)).catch(() => undefined);
   }
   const response = new NextResponse(null, { status: 204 });
   clearCookie(response, SESSION_COOKIE);

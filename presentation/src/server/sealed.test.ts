@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { safeNext } from "./http";
 import { seal, unseal } from "./sealed";
 
 const SECRET = "a-session-secret-of-at-least-32-characters";
@@ -22,17 +21,5 @@ describe("sealed cookies", () => {
     expect(await unseal(await seal({ access: "token" }, SECRET, -1), SECRET)).toBeNull();
     expect(await unseal(undefined, SECRET)).toBeNull();
     expect(await unseal("not sealed", SECRET)).toBeNull();
-  });
-});
-
-describe("safeNext", () => {
-  it("keeps paths of this application", () => {
-    expect(safeNext("/products/1?x=y")).toBe("/products/1?x=y");
-  });
-
-  it("refuses other sites", () => {
-    for (const next of ["https://evil.example/", "//evil.example/", "/\\evil.example", "evil", "", null, undefined]) {
-      expect(safeNext(next)).toBe("/");
-    }
   });
 });

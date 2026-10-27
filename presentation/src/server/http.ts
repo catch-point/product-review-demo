@@ -57,9 +57,25 @@ export function crossSite(request: NextRequest): boolean {
   return origin !== null && origin !== publicOrigin(request).origin;
 }
 
-/** A path of this application to return to after signing in: `/products/1?x=y`, never another site. */
+/** Stands in for this application's origin while a `next` path is resolved. */
+const NEXT_BASE = "http://application.invalid";
+
+/**
+ * A path of this application to return to after signing in: `/products/1?x=y`, never another site.
+ * It is resolved as the redirect will resolve it, since the URL parser drops tabs and newlines and
+ * reads `\` as `/`: `/\t/evil.example` is `//evil.example`, another site.
+ */
 export function safeNext(next: string | null | undefined): string {
-  return next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\") ? next : "/";
+  if (!next?.startsWith("/")) {
+    return "/";
+  }
+  let url: URL;
+  try {
+    url = new URL(next, NEXT_BASE);
+  } catch {
+    return "/";
+  }
+  return url.origin === NEXT_BASE ? `${url.pathname}${url.search}${url.hash}` : "/";
 }
 
 export function setCookie(

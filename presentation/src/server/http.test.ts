@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { describe, expect, it } from "vitest";
 
-import { clearCookie, setCookie } from "./http";
+import { clearCookie, safeNext, setCookie } from "./http";
 import { relay } from "./storage";
 
 describe("responses that set cookies", () => {
@@ -27,5 +27,24 @@ describe("responses that set cookies", () => {
     const mine = relay(new Response("{}", { headers: { "Cache-Control": "no-cache, private", Vary: "Authorization" } }));
     expect(mine.headers.get("cache-control")).toBe("no-cache, private");
     expect(mine.headers.get("vary")).toBe("Cookie");
+  });
+});
+
+describe("safeNext", () => {
+  it("keeps paths of this application", () => {
+    expect(safeNext("/products/1?x=y")).toBe("/products/1?x=y");
+    expect(safeNext("/my-products#new")).toBe("/my-products#new");
+  });
+
+  it("refuses other sites", () => {
+    for (const next of ["https://evil.example/", "//evil.example/", "/\\evil.example", "evil", "", null, undefined]) {
+      expect(safeNext(next)).toBe("/");
+    }
+  });
+
+  it("refuses other sites hidden by characters the URL parser drops", () => {
+    for (const next of ["/\t/evil.example", "/\n/evil.example", "/\r\n/evil.example", "/\t\\evil.example"]) {
+      expect(safeNext(next)).toBe("/");
+    }
   });
 });
